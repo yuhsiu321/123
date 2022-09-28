@@ -17,6 +17,9 @@ public class Server {
         this.application = application;
     }
 
+    /**
+     * Starts the server.
+     */
     public void start() throws IOException {
         System.out.println("Start server...");
         server = new ServerSocket(PORT, 5);
