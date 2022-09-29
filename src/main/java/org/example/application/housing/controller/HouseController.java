@@ -18,7 +18,7 @@ public class HouseController {
     public Response handle(Request request) {
 
         if (request.getMethod().equals("GET")) {
-            return getHouse(request);
+            return getHouses(request);
         }
 
         Response response = new Response();
@@ -30,7 +30,7 @@ public class HouseController {
         return response;
     }
 
-    private Response getHouse(Request request) {
+    private Response getHouses(Request request) {
         List<House> houses = this.houseRepository.findAll();
 
         Response response = new Response();
