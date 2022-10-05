@@ -1,5 +1,7 @@
 package org.example.server.dto;
 
+import org.example.server.http.StatusCode;
+
 public class Response {
 
     private int status;
@@ -8,20 +10,17 @@ public class Response {
     private String contentType;
     private String content = "";
 
+    public void setStatusCode(StatusCode statusCode) {
+        this.status = statusCode.code;
+        this.message = statusCode.message;
+    }
+
     public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public String getContentType() {
