@@ -35,4 +35,17 @@ class RequestBuilderTest {
         assertEquals(29, request.getContentLength());
     }
 
+    @Test
+    void testBuildException() {
+        String randomString =
+                """
+                Lorem ipsum ...
+                """;
+
+        assertThrows(
+                UnsupportedProtocolException.class,
+                () -> RequestBuilder.build(randomString)
+        );
+    }
+
 }
