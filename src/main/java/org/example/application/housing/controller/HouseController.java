@@ -4,6 +4,7 @@ import org.example.application.housing.model.House;
 import org.example.application.housing.repository.HouseRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
+import org.example.server.http.StatusCode;
 
 import java.util.List;
 
@@ -22,8 +23,7 @@ public class HouseController {
         }
 
         Response response = new Response();
-        response.setStatus(405);
-        response.setMessage("Method not allowed");
+        response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
         response.setContentType("text/plain");
         response.setContent(request.getMethod() + ": Not allowed for " + request.getPath());
 
@@ -34,8 +34,7 @@ public class HouseController {
         List<House> houses = this.houseRepository.findAll();
 
         Response response = new Response();
-        response.setStatus(200);
-        response.setMessage("OK");
+        response.setStatusCode(StatusCode.OK);
         response.setContentType("text/plain");
         response.setContent(houses.toString());
 
