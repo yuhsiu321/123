@@ -2,6 +2,7 @@ package org.example.server.util;
 
 import org.example.server.dto.Request;
 import org.example.server.exception.UnsupportedProtocolException;
+import org.example.server.http.Method;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +34,7 @@ class RequestBuilderTest {
 
         // Assert
         assertEquals(29, request.getContentLength());
+        assertEquals(Method.POST.method, request.getMethod());
     }
 
     @Test
