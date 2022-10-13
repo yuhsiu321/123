@@ -5,6 +5,8 @@ import org.example.server.exception.UnsupportedProtocolException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
@@ -32,13 +34,11 @@ public class Server {
      * Main server loop.
      */
     private void run() {
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         while (true) {
             try {
                 Socket socket = server.accept();
-                RequestHandler requestHandler = new RequestHandler(socket, application);
-                requestHandler.run();
-            } catch (UnsupportedProtocolException e) {
-                System.err.println(e.getClass() + ": " + e.getMessage());
+                executorService.submit(new RequestHandler(socket, application));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

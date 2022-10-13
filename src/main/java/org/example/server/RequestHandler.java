@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class RequestHandler {
+public class RequestHandler implements Runnable {
 
     private BufferedReader in;
     private PrintWriter out;
@@ -25,12 +25,15 @@ public class RequestHandler {
         this.application = application;
     }
 
-    public void run() throws UnsupportedProtocolException {
+    @Override
+    public void run() {
         try {
             Request request = getRequest();
             Response response = application.handle(request);
             sendResponse(response);
         } catch (IOException ignored) {
+        } catch (UnsupportedProtocolException e) {
+            e.printStackTrace();
         } finally {
             closeRequest();
         }
