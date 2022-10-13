@@ -1,5 +1,6 @@
 package org.example.server.dto;
 
+import org.example.server.http.ContentType;
 import org.example.server.http.StatusCode;
 
 public class Response {
@@ -27,8 +28,8 @@ public class Response {
         return contentType;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType.contentType;
     }
 
     public String getContent() {
