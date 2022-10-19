@@ -12,10 +12,16 @@ public class WaitingApp implements Application {
     public Response handle(Request request) {
         System.out.println(Thread.currentThread());
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        if (request.getPath().equals("/favicon.ico")) {
+            Response response = new Response();
+            response.setStatusCode(StatusCode.NOT_FOUND);
+            response.setContentType(ContentType.TEXT_PLAIN);
+            response.setContent(StatusCode.NOT_FOUND.message);
+            return response;
+        }
+
+        if (request.getPath().equals("/timeout")) {
+            while (true);
         }
 
 
