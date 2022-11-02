@@ -28,6 +28,9 @@ public class RequestBuilder {
         // Content Length
         request.setContentLength(HttpRegex.findHeaderAsInt(requestString, "Content-Length"));
 
+        // Content
+        request.setContent(HttpRegex.findContent(requestString));
+
         // TODO: Add additional information to the request
 
         return request;

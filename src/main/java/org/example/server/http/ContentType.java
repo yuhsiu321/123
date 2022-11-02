@@ -1,7 +1,8 @@
 package org.example.server.http;
 
 public enum ContentType {
-    TEXT_PLAIN("text/plain")
+    TEXT_PLAIN("text/plain"),
+    APPLICATION_JSON("application/json")
     ;
 
 
