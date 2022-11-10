@@ -1,6 +1,9 @@
 package org.example.application.socialmedia;
 
+import org.example.application.socialmedia.controller.PackageController;
 import org.example.application.socialmedia.controller.UserController;
+import org.example.application.socialmedia.respository.PackageMemoryRepository;
+import org.example.application.socialmedia.respository.PackageRepository;
 import org.example.application.socialmedia.respository.UserMemoryRepository;
 import org.example.application.socialmedia.respository.UserRepository;
 import org.example.server.Application;
@@ -12,15 +15,23 @@ import org.example.server.http.StatusCode;
 public class SocialMediaApp implements Application {
 
     private UserController userController;
+    private PackageController packageController;
+
 
     public SocialMediaApp() {
         UserRepository userRepository = new UserMemoryRepository();
+        PackageRepository packageRepository = new PackageMemoryRepository();
+        this.packageController = new PackageController(packageRepository);
         this.userController = new UserController(userRepository);
     }
 
     @Override
     public Response handle(Request request) {
         if (request.getPath().startsWith("/users")) {
+            return userController.handle(request);
+        } else if (request.getPath().startsWith("/package")) {
+            return packageController.handle(request);
+        } else if (request.getPath().startsWith("/sessions")) {
             return userController.handle(request);
         }
 
