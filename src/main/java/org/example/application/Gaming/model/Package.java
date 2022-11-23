@@ -4,6 +4,8 @@ public class Package {
 
     private String id;
 
+    private String type;
+
     private String name;
 
     private Integer damage;

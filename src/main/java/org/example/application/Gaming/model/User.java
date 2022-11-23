@@ -9,6 +9,8 @@ public class User {
 
     private String password;
 
+    private Integer coin = 20;
+
     public User() {
     }
 
