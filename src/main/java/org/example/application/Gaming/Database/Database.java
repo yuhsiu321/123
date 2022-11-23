@@ -1,6 +1,8 @@
 package org.example.application.Gaming.Database;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Database implements DatabaseInterface{
 
@@ -24,7 +26,11 @@ public class Database implements DatabaseInterface{
 
     @Override
     public Connection getConnection() {
-
+        try {
+            return DriverManager.getConnection(DB_URL,DB_USER,DB_PW);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
