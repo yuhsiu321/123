@@ -63,6 +63,16 @@ public class UserMemoryRepository implements UserRepository {
 
         try {
             Connection conn = Database.getDatabase().getConnection();
+            Statement stmt1 = conn.createStatement();
+            stmt1.execute(
+                    """
+                        CREATE TABLE IF NOT EXISTS users (
+                            username VARCHAR(255) PRIMARY KEY,
+                            password VARCHAR(255) NOT NULL
+                        );
+                        """
+            );
+            stmt1.close();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username,password) VALUES(?,?) ;");
             ps.setString(1, user.getUsername());
             ps.setString(2,user.getPassword());
