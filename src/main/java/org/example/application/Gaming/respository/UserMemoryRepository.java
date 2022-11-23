@@ -1,5 +1,6 @@
 package org.example.application.Gaming.respository;
 
+import org.example.DatabaseInit;
 import org.example.application.Gaming.Database.Database;
 import org.example.application.Gaming.model.User;
 
@@ -35,10 +36,17 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public User findByUsername(String username) {
-        Connection conn = Database.getDatabase().getConnection();
         try {
-            Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT username, password From users WHERE username=?;");
+            Connection conn = Database.getDatabase().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT username, password From users WHERE username=?;");
+            ps.setString(1,username);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
