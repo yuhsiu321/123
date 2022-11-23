@@ -9,7 +9,7 @@ public class User {
 
     private String password;
 
-    private Integer coin = 20;
+    private int coin = 20;
 
     public User() {
     }
@@ -34,4 +34,8 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int getCoin(){return coin;}
+
+    public void setCoin(int coin){this.coin = coin;}
 }
