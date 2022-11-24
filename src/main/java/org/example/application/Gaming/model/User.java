@@ -7,6 +7,8 @@ public class User {
 
     private String username;
 
+    private String token;
+
     private String password;
 
     private int coin = 20;
