@@ -37,7 +37,7 @@ public class PackageMemoryRepository implements PackageRepository{
     public Package save(Package packages) {
 
         try {
-            Connection conn = Database.getDatabase().getConnection();
+            Connection conn = Database.getInstance().getConnection();
             Statement stmt1 = null;
             stmt1 = conn.createStatement();
             stmt1.execute(

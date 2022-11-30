@@ -10,18 +10,19 @@ import org.example.server.http.ContentType;
 import org.example.server.http.Method;
 import org.example.server.http.StatusCode;
 
-public class UserController {
+public class SessionController {
 
     private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository) {
+    public SessionController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public Response handle(Request request) {
+    public Response handle(Request request){
         if (request.getMethod().equals(Method.POST.method)) {
-            return create(request);
+            return readAll(request);
         }
+
         Response response = new Response();
         response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
         response.setContentType(ContentType.TEXT_PLAIN);
@@ -30,7 +31,8 @@ public class UserController {
         return response;
     }
 
-    private Response readAll() {
+
+    private Response readAll0() {
         ObjectMapper objectMapper = new ObjectMapper();
 
         Response response = new Response();
@@ -47,8 +49,7 @@ public class UserController {
         return response;
     }
 
-
-    private Response create(Request request) {
+    private Response readAll(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         String json = request.getContent();
@@ -59,7 +60,7 @@ public class UserController {
             throw new RuntimeException(e);
         }
 
-        user = userRepository.save(user);
+        user = userRepository.findByUsername(user.getUsername());
 
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
@@ -74,4 +75,5 @@ public class UserController {
 
         return response;
     }
+
 }

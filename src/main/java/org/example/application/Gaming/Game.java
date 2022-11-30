@@ -1,6 +1,7 @@
 package org.example.application.Gaming;
 
 import org.example.application.Gaming.controller.PackageController;
+import org.example.application.Gaming.controller.SessionController;
 import org.example.application.Gaming.controller.UserController;
 import org.example.application.Gaming.respository.PackageMemoryRepository;
 import org.example.application.Gaming.respository.PackageRepository;
@@ -16,6 +17,7 @@ public class Game implements Application {
 
     private UserController userController;
     private PackageController packageController;
+    private SessionController sessionController;
 
 
     public Game() {
@@ -23,6 +25,7 @@ public class Game implements Application {
         PackageRepository packageRepository = new PackageMemoryRepository();
         this.packageController = new PackageController(packageRepository);
         this.userController = new UserController(userRepository);
+        this.sessionController = new SessionController(userRepository);
     }
 
     @Override
@@ -32,7 +35,7 @@ public class Game implements Application {
         } else if (request.getPath().startsWith("/package")) {
             return packageController.handle(request);
         } else if (request.getPath().startsWith("/sessions")) {
-            return userController.handle(request);
+            return sessionController.handle(request);
         }
 
         Response response = new Response();

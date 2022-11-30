@@ -18,7 +18,7 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        try(Connection conn = Database.getDatabase().getConnection();
+        try(Connection conn = Database.getInstance().getConnection();
             Statement sm = conn.createStatement();
             ResultSet rs = sm.executeQuery("SELECT username,password FROM users;"))
         {
@@ -37,8 +37,8 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public User findByUsername(String username) {
         try {
-            Connection conn = Database.getDatabase().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT username, password From users WHERE username=?;");
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=?;");
             ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -62,7 +62,7 @@ public class UserMemoryRepository implements UserRepository {
     public User save(User user) {
 
         try {
-            Connection conn = Database.getDatabase().getConnection();
+            Connection conn = Database.getInstance().getConnection();
             Statement stmt1 = conn.createStatement();
             stmt1.execute(
                     """
@@ -74,12 +74,13 @@ public class UserMemoryRepository implements UserRepository {
                         """
             );
             stmt1.close();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username,password,coin) VALUES(?,?,?) ;");
-            ps.setString(1, user.getUsername());
-            ps.setString(2,user.getPassword());
-            ps.setInt(3,user.getCoin());
-            ps.execute();
-            conn.close();
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username,password,coin) VALUES(?,?,?) ;");
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getPassword());
+                ps.setInt(3, user.getCoin());
+                ps.execute();
+                conn.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

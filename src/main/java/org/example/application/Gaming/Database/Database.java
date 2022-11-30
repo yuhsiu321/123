@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class Database implements DatabaseInterface{
 
-    private static Database database;
+    private static Database instance;
 
     private static String DB_URL = "jdbc:postgresql://localhost:5431/swe1db";
 
@@ -17,11 +17,11 @@ public class Database implements DatabaseInterface{
     private Database(){
     }
 
-    public static Database getDatabase() {
-        if (Database.database == null) {
-            Database.database = new Database();
+    public static Database getInstance() {
+        if (Database.instance == null) {
+            Database.instance = new Database();
         }
-        return Database.database;
+        return Database.instance;
     }
 
     @Override
