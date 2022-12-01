@@ -59,19 +59,32 @@ public class UserController {
             throw new RuntimeException(e);
         }
 
-        user = userRepository.save(user);
-
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
+        String content1;
         try {
-            content = objectMapper.writeValueAsString(user);
+            content1 = objectMapper.writeValueAsString(userRepository.findbyUsername(user));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        response.setContent(content);
-
-        return response;
+        if(content1.equals("null")){
+            user = userRepository.save(user);
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            String content = null;
+            try {
+                content = objectMapper.writeValueAsString(user);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            response.setContent(content);
+            return response;
+        }else{
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            String content = "username already exist!";
+            response.setContent(content);
+            return response;
+        }
     }
 }
