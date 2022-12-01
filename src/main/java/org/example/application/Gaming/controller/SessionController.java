@@ -49,7 +49,12 @@ public class SessionController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        response.setContent(content);
+        if(content.equals("null")){
+            content="false username or password";
+            response.setContent(content);
+        }else {
+            response.setContent(content);
+        }
         return response;
 
     }

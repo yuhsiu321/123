@@ -50,7 +50,6 @@ public class UserMemoryRepository implements UserRepository {
                     ps.close();
                     conn.close();
                     return user;
-
                 }
             }
         } catch (SQLException e) {
