@@ -8,7 +8,7 @@ public class Database implements DatabaseInterface{
 
     private static Database instance;
 
-    private static String DB_URL = "jdbc:postgresql://localhost:5431/swe1db";
+    private static String DB_URL = "jdbc:postgresql://localhost:5430/swe1db";
 
     private static String DB_USER = "swe1user";
 

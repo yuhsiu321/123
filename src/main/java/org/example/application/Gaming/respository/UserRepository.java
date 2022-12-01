@@ -8,7 +8,7 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User findByUsername(String username);
+    User findByUsername(String username, String password);
 
     User save(User user);
 

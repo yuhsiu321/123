@@ -20,7 +20,7 @@ public class SessionController {
 
     public Response handle(Request request){
         if (request.getMethod().equals(Method.POST.method)) {
-            return readAll(request);
+            return read(request);
         }
 
         Response response = new Response();
@@ -31,27 +31,9 @@ public class SessionController {
         return response;
     }
 
-
-    private Response readAll0() {
-        ObjectMapper objectMapper = new ObjectMapper();
-
+    private Response read(Request request){
         Response response = new Response();
-        response.setStatusCode(StatusCode.OK);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
-        try {
-            content = objectMapper.writeValueAsString(userRepository.findAll());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        response.setContent(content);
-
-        return response;
-    }
-
-    private Response readAll(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
-
         String json = request.getContent();
         User user;
         try {
@@ -59,21 +41,17 @@ public class SessionController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        user = userRepository.findByUsername(user.getUsername());
-
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
+        response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        String content = null;
+        String content;
         try {
-            content = objectMapper.writeValueAsString(user);
+            content = objectMapper.writeValueAsString(userRepository.findByUsername(user.getUsername(),user.getPassword()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         response.setContent(content);
-
         return response;
+
     }
 
 }

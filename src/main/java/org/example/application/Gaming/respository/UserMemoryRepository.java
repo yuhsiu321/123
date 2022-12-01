@@ -35,16 +35,22 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsername(String username, String password) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=? AND password=?;");
             ps.setString(1,username);
+            ps.setString(2,password);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                    return user;
+
                 }
             }
         } catch (SQLException e) {
