@@ -9,7 +9,15 @@ public class Request {
     private int contentLength;
     private String content;
 
+    private String authorization;
+
     private String request;
+
+    public String getAuthorization(){return authorization;}
+
+    public void setAuthorization(String authorization){
+        this.authorization = authorization;
+    }
 
     public String getMethod() {
         return method;

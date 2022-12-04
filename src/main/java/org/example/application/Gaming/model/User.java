@@ -33,8 +33,9 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+    public String getPassword(){return password;}
 
-    public String getPassword() {
+    public String getHashPassword() {
         String passwordHash = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
@@ -48,4 +49,12 @@ public class User {
     public int getCoin(){return coin;}
 
     public void setCoin(int coin){this.coin = coin;}
+
+    public void setToken(String username){this.token = token;}
+
+    public String getToken(){
+        String ttoken = username+"-mtcgtoken";
+        return ttoken;
+    }
+
 }

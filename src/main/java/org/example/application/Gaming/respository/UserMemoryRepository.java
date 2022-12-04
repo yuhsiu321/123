@@ -40,7 +40,7 @@ public class UserMemoryRepository implements UserRepository {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=? AND password=?;");
             ps.setString(1,user.getUsername());
-            ps.setString(2,user.getPassword());
+            ps.setString(2,user.getHashPassword());
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     user = new User();
@@ -86,10 +86,11 @@ public class UserMemoryRepository implements UserRepository {
 
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username,password,coins) VALUES(?,?,?) ;");
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO users(username,password,coins,token) VALUES(?,?,?,?) ;");
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            ps.setString(2, user.getHashPassword());
             ps.setInt(3, user.getCoin());
+            ps.setString(4,user.getToken());
             ps.execute();
             conn.close();
         } catch (SQLException e) {
