@@ -36,11 +36,13 @@ public class SessionController {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = request.getContent();
         User user;
+
         try {
             user = objectMapper.readValue(json, User.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
         String content;
@@ -49,6 +51,7 @@ public class SessionController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
         if(content.equals("null")){
             content="false username or password";
             response.setContent(content);
