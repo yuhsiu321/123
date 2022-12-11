@@ -38,19 +38,6 @@ public class CardMemoryRepository implements CardRepository{
 
         try {
             Connection conn = Database.getInstance().getConnection();
-            Statement stmt1 = null;
-            stmt1 = conn.createStatement();
-            stmt1.execute(
-                    """
-                        CREATE TABLE IF NOT EXISTS cards (
-                            id VARCHAR(255) PRIMARY KEY,
-                            name VARCHAR(255) NOT NULL,
-                            damage INT NOT NULL,
-                            FOREIGN KEY (username) REFERENCES users(username) 
-                        );
-                        """
-            );
-            stmt1.close();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name,damage,username) VALUES(?,?,?,?) ;");
             ps.setString(1, cards.getId());
             ps.setString(2,cards.getName());

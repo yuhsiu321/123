@@ -31,21 +31,11 @@ public class RequestBuilder {
         // Content
         request.setContent(HttpRegex.findContent(requestString));
 
-        request.setAuthorization(getAuthorization(requestString));
-
+        //request.setAuthorization(getAuthorization(requestString));
+        request.setAuthorization(HttpRegex.findHeaderAsString(requestString, "Authorization"));
         // TODO: Add additional information to the request
 
         return request;
-    }
-
-    private static String getAuthorization(String requestString)throws UnsupportedProtocolException {
-        String auth = HttpRegex.findAuth(requestString);
-
-        if (null == auth) {
-            throw new UnsupportedProtocolException("No HTTP authorization in request");
-        }
-
-        return auth;
     }
 
     private static String getMethod(String requestString) throws UnsupportedProtocolException {
