@@ -8,8 +8,16 @@ public class Response {
     private int status;
     private String message;
 
+    private String Authorization;
+
     private String contentType;
     private String content = "";
+
+    public String getAuthorization(){return Authorization;}
+
+    public void setAuthorization(String authorization){
+        this.Authorization = authorization;
+    }
 
     public void setStatusCode(StatusCode statusCode) {
         this.status = statusCode.code;
@@ -45,7 +53,7 @@ public class Response {
         return
                 "HTTP/1.1 " + status + " " + message + "\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
-                "Content-Length: " + content.length() + "\r\n" +
+                "Content-Length: " + content.length() + "\r\n" + "Authorization: " + Authorization +"\r\n" +
                 "\r\n" +
                 content;
     }

@@ -1,6 +1,6 @@
 package org.example.application.Gaming.model;
 
-public class Package {
+public class Card {
 
     private String id;
 
@@ -10,11 +10,11 @@ public class Package {
 
     private Integer damage;
 
-    public Package(){
+    public Card(){
 
     }
 
-    public Package(String id, String name, Integer damage){
+    public Card(String id, String name, Integer damage){
         this.id = id;
         this.name = name;
         this.damage = damage;

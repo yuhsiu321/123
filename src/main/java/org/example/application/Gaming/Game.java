@@ -1,10 +1,10 @@
 package org.example.application.Gaming;
 
-import org.example.application.Gaming.controller.PackageController;
+import org.example.application.Gaming.controller.CardController;
 import org.example.application.Gaming.controller.SessionController;
 import org.example.application.Gaming.controller.UserController;
-import org.example.application.Gaming.respository.PackageMemoryRepository;
-import org.example.application.Gaming.respository.PackageRepository;
+import org.example.application.Gaming.respository.CardMemoryRepository;
+import org.example.application.Gaming.respository.CardRepository;
 import org.example.application.Gaming.respository.UserMemoryRepository;
 import org.example.application.Gaming.respository.UserRepository;
 import org.example.server.Application;
@@ -16,14 +16,14 @@ import org.example.server.http.StatusCode;
 public class Game implements Application {
 
     private UserController userController;
-    private PackageController packageController;
+    private CardController cardController;
     private SessionController sessionController;
 
 
     public Game() {
         UserRepository userRepository = new UserMemoryRepository();
-        PackageRepository packageRepository = new PackageMemoryRepository();
-        this.packageController = new PackageController(packageRepository);
+        CardRepository cardRepository = new CardMemoryRepository();
+        this.cardController = new CardController(cardRepository);
         this.userController = new UserController(userRepository);
         this.sessionController = new SessionController(userRepository);
     }
@@ -33,7 +33,7 @@ public class Game implements Application {
         if (request.getPath().startsWith("/users")) {
             return userController.handle(request);
         } else if (request.getPath().startsWith("/package")) {
-            return packageController.handle(request);
+            return cardController.handle(request);
         } else if (request.getPath().startsWith("/sessions")) {
             return sessionController.handle(request);
         }

@@ -10,7 +10,7 @@ class ResponseTest {
     @Test
     void testSetStatusCode() {
         // Arrange
-        Response response = new Response();
+        Response response = new Response(authorization);
 
         // Act
         response.setStatusCode(StatusCode.OK);

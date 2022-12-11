@@ -1,7 +1,7 @@
 package org.example.application.Gaming.respository;
 
 import org.example.application.Gaming.Database.Database;
-import org.example.application.Gaming.model.Package;
+import org.example.application.Gaming.model.Card;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,31 +10,31 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PackageMemoryRepository implements PackageRepository{
+public class CardMemoryRepository implements CardRepository{
 
-    private final List<Package> packages;
+    private final List<Card> cards;
 
-    public PackageMemoryRepository() {
-        this.packages = new ArrayList<>();
+    public CardMemoryRepository() {
+        this.cards = new ArrayList<>();
     }
 
     @Override
-    public List<Package> findAll() {
-        return this.packages;
+    public List<Card> findAll() {
+        return this.cards;
     }
 
     @Override
-    public Package findById(String id) {
-        for (Package packages: this.packages) {
-            if(packages.getId().equals(id)){
-                return packages;
+    public Card findById(String id) {
+        for (Card card: this.cards) {
+            if(card.getId().equals(id)){
+                return card;
             }
         }
         return null;
     }
 
     @Override
-    public Package save(Package packages) {
+    public Card save(Card cards) {
 
         try {
             Connection conn = Database.getInstance().getConnection();
@@ -42,7 +42,7 @@ public class PackageMemoryRepository implements PackageRepository{
             stmt1 = conn.createStatement();
             stmt1.execute(
                     """
-                        CREATE TABLE IF NOT EXISTS packages (
+                        CREATE TABLE IF NOT EXISTS cards (
                             id VARCHAR(255) PRIMARY KEY,
                             name VARCHAR(255) NOT NULL,
                             damage INT NOT NULL,
@@ -51,10 +51,10 @@ public class PackageMemoryRepository implements PackageRepository{
                         """
             );
             stmt1.close();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(id,name,damage,username) VALUES(?,?,?,?) ;");
-            ps.setString(1, packages.getId());
-            ps.setString(2,packages.getName());
-            ps.setInt(3,packages.getDamage());
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name,damage,username) VALUES(?,?,?,?) ;");
+            ps.setString(1, cards.getId());
+            ps.setString(2,cards.getName());
+            ps.setInt(3,cards.getDamage());
             //ps.setString(4,);
             ps.execute();
             conn.close();
