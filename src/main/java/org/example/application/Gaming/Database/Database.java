@@ -31,7 +31,6 @@ public class Database implements DatabaseInterface{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 }

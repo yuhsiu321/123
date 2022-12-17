@@ -1,5 +1,10 @@
 package org.example.server.dto;
 
+import org.example.application.Gaming.model.User;
+import org.example.application.Gaming.respository.UserMemoryRepository;
+
+import java.util.HashMap;
+
 public class Request {
 
     private String method;
@@ -13,6 +18,11 @@ public class Request {
 
     private String request;
 
+    User authUser;
+
+    HashMap<String, String> headers;
+
+    public User getAuthUser(){return authUser;}
     public String getAuthorization(){return authorization;}
 
     public void setAuthorization(String authorization){
@@ -70,5 +80,19 @@ public class Request {
     @Override
     public String toString() {
         return request;
+    }
+
+    public void authorizeRequest() {
+        String authorizationHeader = headers.get("Authorization");
+        if (authorizationHeader != null) {
+            String token = authorizationHeader.replace("Basic ", "");
+            String[] parts = token.split("-");
+            if (parts.length == 2) {
+                User user = UserMemoryRepository.getInstance().findbyUsername(parts[0]);
+                if (user != null && token.equals(user.getToken())) {
+                    authUser = user;
+                }
+            }
+        }
     }
 }

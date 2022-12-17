@@ -1,5 +1,7 @@
 package org.example.server.util;
 
+import org.example.application.Gaming.model.User;
+import org.example.application.Gaming.respository.UserMemoryRepository;
 import org.example.server.exception.UnsupportedProtocolException;
 
 import java.util.regex.Matcher;
@@ -51,6 +53,7 @@ public class HttpRegex {
         return m.group(1);
     }
 
+
     /**
      * Finds the value of an HTTP header in an HTTP request string.
      * Returns the value as a string. If not found returns null;
@@ -87,4 +90,5 @@ public class HttpRegex {
 
         return m.group(1);
     }
+
 }

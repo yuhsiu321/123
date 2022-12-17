@@ -42,6 +42,7 @@ public class CardMemoryRepository implements CardRepository{
             ps.setString(1, cards.getId());
             ps.setString(2,cards.getName());
             ps.setInt(3,cards.getDamage());
+            //ps.setString(4,username);
             //ps.setString(4,);
             ps.execute();
             conn.close();

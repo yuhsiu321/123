@@ -3,6 +3,7 @@ package org.example.application.Gaming.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.application.Gaming.model.Card;
+import org.example.application.Gaming.model.User;
 import org.example.application.Gaming.respository.CardRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
@@ -20,7 +21,12 @@ public class CardController {
 
     public Response handle(Request request){
         if(request.getMethod().equals(Method.POST.method)){
-            return create(request);
+            if (request.getAuthUser() == null || !"admin".equalsIgnoreCase(request.getAuthUser().getUsername())) {
+                return null;
+            }else {
+                //User user = (User) request.getAuthUser();
+                return create(request);
+            }
         }
 
         if (request.getMethod().equals(Method.GET.method)) {
@@ -68,7 +74,6 @@ public class CardController {
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setAuthorization("Basic admin-mtcgToken");
         String content = null;
         try {
             content = objectMapper.writeValueAsString(card);

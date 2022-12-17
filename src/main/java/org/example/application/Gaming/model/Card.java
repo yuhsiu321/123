@@ -1,5 +1,8 @@
 package org.example.application.Gaming.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class Card {
 
     private String id;
