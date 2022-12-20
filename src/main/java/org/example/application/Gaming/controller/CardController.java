@@ -21,13 +21,13 @@ public class CardController {
     }
 
     public Response handle(Request request){
-        /*if (request.getToken() == null || !"admin".equalsIgnoreCase(request.getToken())) {
+        if (request.getToken() == null || !"admin".equalsIgnoreCase(request.getToken())) {
             Response response = new Response();
             response.setStatusCode(StatusCode.UNAUTHORIZED);
             response.setContentType(ContentType.TEXT_PLAIN);
             response.setContent(StatusCode.UNAUTHORIZED.message);
-            return null;
-        }*/
+            return response;
+        }
         if(request.getMethod().equals(Method.POST.method)){
                 //User user = new User();
                 //user.setUsername(request.getToken());
@@ -39,7 +39,7 @@ public class CardController {
         response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
         response.setContentType(ContentType.TEXT_PLAIN);
         response.setContent(StatusCode.METHODE_NOT_ALLOWED.message);
-        return null;
+        return response;
     }
 
     private Response readAll() {

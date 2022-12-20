@@ -64,10 +64,10 @@ public class RequestBuilder {
         return path;
     }
 
-    private static String authorizeRequest(String requestString, String header) {
+    private static String authorizeRequest(String requestString, String header) throws UnsupportedProtocolException {
         String value = findHeader(requestString,header);
         if (value != null) {
-            String token = value.replace(" Basic ", "");
+            String token = value.replace("Basic ", "");
             String[] parts = token.split("-");
             if (parts.length == 2) {
                 User user = UserMemoryRepository.getInstance().findbyUsername(parts[0]);
