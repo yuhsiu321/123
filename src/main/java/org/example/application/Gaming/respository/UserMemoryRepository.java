@@ -25,15 +25,6 @@ public class UserMemoryRepository implements UserRepository {
         this.users = new ArrayList<>();
     }
 
-    private static UserMemoryRepository instance;
-
-    public static UserMemoryRepository getInstance() {
-        if (UserMemoryRepository.instance == null) {
-            UserMemoryRepository.instance = new UserMemoryRepository();
-        }
-        return UserMemoryRepository.instance;
-    }
-
     @Override
     public List<User> findAll() {
         try(Connection conn = Database.getInstance().getConnection();
