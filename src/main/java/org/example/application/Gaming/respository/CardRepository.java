@@ -1,16 +1,30 @@
 package org.example.application.Gaming.respository;
 
 import org.example.application.Gaming.model.Card;
+import org.example.application.Gaming.model.Package;
+import org.example.application.Gaming.model.User;
 
 import java.util.List;
 
 public interface CardRepository {
 
-    List<Card> findAll();
+    Card getCard(int id);
 
-    Card findById(String id);
+    List<Card> getCards();
 
-    Card save(Card packages,String username);
+    List<Card> getCardsForUser(User user);
+
+    List<Card> getCardsForPackage(Package cardPackage);
+
+    Card addCard(Card card);
+
+    Card addCardToPackage(Card card, Package cardPackage);
+
+    Card addCardToUser(Card card, User user);
+
+    Card lockCard(Card card, boolean isLocked);
+
+    boolean deleteCard(int id);
 
 
 }

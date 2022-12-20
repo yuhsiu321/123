@@ -7,11 +7,20 @@ public class Card {
 
     private String id;
 
-    private String type;
+    private String card_type;
+
+    private String element_type;
 
     private String name;
 
     private Integer damage;
+
+    private boolean isLocked;
+
+
+    public boolean lock(boolean isLocked) {
+        return isLocked;
+    }
 
     public Card(){
 
@@ -34,4 +43,20 @@ public class Card {
     public Integer getDamage(){return damage;}
 
     public void setDamage(int damage){this.damage = damage;}
+
+    public String getCard_type() {
+        return card_type;
+    }
+
+    public void setCard_type(String card_type) {
+        this.card_type = card_type;
+    }
+
+    public String getElement_type() {
+        return element_type;
+    }
+
+    public void setElement_type(String element_type) {
+        this.element_type = element_type;
+    }
 }

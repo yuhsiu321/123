@@ -29,15 +29,47 @@ public class UserMemoryRepository implements UserRepository {
     public List<User> findAll() {
         try(Connection conn = Database.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT username,password FROM users;"))
+            ResultSet rs = sm.executeQuery("SELECT id,username,password,token,coins,status FROM users;"))
         {
             while (rs.next()){
                 User user = new User();
+                user.setId(rs.getInt("id"));
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
+                user.setToken(rs.getString("token"));
+                user.setCoin(rs.getInt("coins"));
+                user.setStatus(rs.getString("status"));
                 users.add(user);
             }
         }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User getUser(int id) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT id, username, password, token, coins, status FROM users WHERE id=?;");
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setToken(rs.getString("token"));
+                user.setCoin(rs.getInt("coins"));
+                user.setStatus(rs.getString("status"));
+                rs.close();
+                ps.close();
+                conn.close();
+
+                return user;
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -107,6 +139,36 @@ public class UserMemoryRepository implements UserRepository {
             e.printStackTrace();
         }
         return user;
+    }
+
+    @Override
+    public User updateUser(int id, User user) {
+        User oldUser = (User) this.getUser(id);
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET username = ?, password = ?, token = ?, coins = ?, status = ? WHERE id = ?;");
+
+            ps.setString(1, user.getUsername() != null ? user.getUsername() : oldUser.getUsername());
+            ps.setString(2, user.getPassword() != null ? user.getPassword() : oldUser.getPassword());
+            ps.setString(3, user.getToken() != null ? user.getToken() : oldUser.getToken());
+            ps.setInt(4, user.getCoin());
+            ps.setString(5, user.getStatus() != null ? user.getStatus() : oldUser.getStatus());
+            ps.setInt(6, id);
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            return this.getUser(id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

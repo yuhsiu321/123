@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class User {
 
+    private Integer id;
+
     private String username;
 
     private String token;
@@ -24,6 +26,14 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getUsername() {
@@ -57,4 +67,11 @@ public class User {
         return ttoken;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
