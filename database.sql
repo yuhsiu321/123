@@ -16,7 +16,6 @@ DROP TABLE IF EXISTS packages CASCADE;
 CREATE TABLE packages
 (
     id    SERIAL PRIMARY KEY,
-    name  VARCHAR(255)  NOT NULL DEFAULT 'Card Package',
     price DECIMAL(6, 2) NOT NULL DEFAULT 5
 );
 
@@ -25,11 +24,11 @@ CREATE TABLE packages
 DROP TABLE IF EXISTS cards CASCADE;
 CREATE TABLE cards
 (
-    id           SERIAL PRIMARY KEY,
+    id           PRIMARY KEY,
     name         VARCHAR(255)  NOT NULL,
     damage       DECIMAL(6, 2) NOT NULL,
-    element_type VARCHAR(255)  NOT NULL,
-    card_type    VARCHAR(255)  NOT NULL,
+    element_type VARCHAR(255)  ,
+    card_type    VARCHAR(255)  ,
     package_id   INT,
     user_name    VARCHAR,
     in_deck      BOOLEAN DEFAULT FALSE,
