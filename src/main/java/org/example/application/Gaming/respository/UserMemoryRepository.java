@@ -16,6 +16,15 @@ public class UserMemoryRepository implements UserRepository {
         this.users = new ArrayList<>();
     }
 
+    private static UserMemoryRepository instance;
+
+    public static UserMemoryRepository getInstance() {
+        if (UserMemoryRepository.instance == null) {
+            UserMemoryRepository.instance = new UserMemoryRepository();
+        }
+        return UserMemoryRepository.instance;
+    }
+
     @Override
     public List<User> findAll() {
         try(Connection conn = Database.getInstance().getConnection();
@@ -59,14 +68,14 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User findbyUsername(User user){
+    public User findbyUsername(String username){
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=?;");
-            ps.setString(1,user.getUsername());
+            ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    user = new User();
+                    User user = new User();
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     rs.close();

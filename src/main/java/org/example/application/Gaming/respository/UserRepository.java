@@ -10,7 +10,7 @@ public interface UserRepository {
 
     User login(User user);
 
-    User findbyUsername(User user);
+    User findbyUsername(String username);
 
     User save(User user);
 

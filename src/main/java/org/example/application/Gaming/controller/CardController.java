@@ -3,12 +3,14 @@ package org.example.application.Gaming.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.application.Gaming.model.Card;
+import org.example.application.Gaming.model.User;
 import org.example.application.Gaming.respository.CardRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
 import org.example.server.http.ContentType;
 import org.example.server.http.Method;
 import org.example.server.http.StatusCode;
+import org.jetbrains.annotations.NotNull;
 
 public class CardController {
 
@@ -19,13 +21,19 @@ public class CardController {
     }
 
     public Response handle(Request request){
+        /*if (request.getToken() == null || !"admin".equalsIgnoreCase(request.getToken())) {
+            Response response = new Response();
+            response.setStatusCode(StatusCode.UNAUTHORIZED);
+            response.setContentType(ContentType.TEXT_PLAIN);
+            response.setContent(StatusCode.UNAUTHORIZED.message);
+            return null;
+        }*/
         if(request.getMethod().equals(Method.POST.method)){
-            return create(request);
+                //User user = new User();
+                //user.setUsername(request.getToken());
+                return create(request);
         }
 
-        if (request.getMethod().equals(Method.GET.method)) {
-            return readAll();
-        }
 
         Response response = new Response();
         response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
@@ -40,7 +48,7 @@ public class CardController {
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setAuthorization("Basic admin-mtcgtoken");
+        //response.setAuthorization("username");
         String content = null;
         try {
             content = objectMapper.writeValueAsString(cardRepository.findAll());
@@ -63,13 +71,14 @@ public class CardController {
             throw new RuntimeException(e);
         }
 
-        card = cardRepository.save(card);
+        card = cardRepository.save(card, request.getToken());
 
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setAuthorization("Basic admin-mtcgToken");
-        String content = null;
+        //response.setAuthorization("Basic "+username+"-mtcgToken");
+        //response.setAuthorization("Basic admin-mtcgToken");
+        String content;
         try {
             content = objectMapper.writeValueAsString(card);
         } catch (JsonProcessingException e) {

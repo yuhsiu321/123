@@ -34,7 +34,7 @@ public class CardMemoryRepository implements CardRepository{
     }
 
     @Override
-    public Card save(Card cards) {
+    public Card save(Card cards,String username) {
 
         try {
             Connection conn = Database.getInstance().getConnection();
@@ -42,7 +42,7 @@ public class CardMemoryRepository implements CardRepository{
             ps.setString(1, cards.getId());
             ps.setString(2,cards.getName());
             ps.setInt(3,cards.getDamage());
-            //ps.setString(4,);
+            ps.setString(4,username);
             ps.execute();
             conn.close();
         } catch (SQLException e) {

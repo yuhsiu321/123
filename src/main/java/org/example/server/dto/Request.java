@@ -13,6 +13,8 @@ public class Request {
 
     private String request;
 
+    private String token;
+
     public String getAuthorization(){return authorization;}
 
     public void setAuthorization(String authorization){
@@ -66,6 +68,10 @@ public class Request {
     public void setRequest(String request) {
         this.request = request;
     }
+
+    public String getToken() {return token;}
+
+    public void setToken(String token) {this.token = token;}
 
     @Override
     public String toString() {

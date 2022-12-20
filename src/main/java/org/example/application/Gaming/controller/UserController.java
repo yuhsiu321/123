@@ -61,7 +61,7 @@ public class UserController {
 
         String content1;
         try {
-            content1 = objectMapper.writeValueAsString(userRepository.findbyUsername(user));
+            content1 = objectMapper.writeValueAsString(userRepository.findbyUsername(user.getUsername()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

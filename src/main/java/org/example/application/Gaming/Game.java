@@ -32,7 +32,7 @@ public class Game implements Application {
     public Response handle(Request request) {
         if (request.getPath().startsWith("/users")) {
             return userController.handle(request);
-        } else if (request.getPath().startsWith("/package")) {
+        } else if (request.getPath().startsWith("/packages")) {
             return cardController.handle(request);
         } else if (request.getPath().startsWith("/sessions")) {
             return sessionController.handle(request);

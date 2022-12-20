@@ -14,7 +14,7 @@ public class DemoApp implements Application {
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.TEXT_PLAIN);
         response.setContent(request.getRequest());
-
+        response.setAuthorization(request.getToken());
         return response;
     }
 }
