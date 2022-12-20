@@ -64,7 +64,7 @@ public class RequestBuilder {
         return path;
     }
 
-    private static String authorizeRequest(String requestString, String header) throws UnsupportedProtocolException {
+    private static String authorizeRequest(String requestString, String header){
         String value = findHeader(requestString,header);
         if (value != null) {
             String token = value.replace("Basic ", "");

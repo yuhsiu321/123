@@ -53,7 +53,7 @@ public class User {
     public void setToken(String username){this.token = token;}
 
     public String getToken(){
-        String ttoken = username+"-mtcgtoken";
+        String ttoken = username+"-mtcgToken";
         return ttoken;
     }
 
