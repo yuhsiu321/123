@@ -10,6 +10,15 @@ import java.util.List;
 
 public class UserMemoryRepository implements UserRepository {
 
+    private static UserMemoryRepository instance;
+
+    public static UserMemoryRepository getInstance() {
+        if (UserMemoryRepository.instance == null) {
+            UserMemoryRepository.instance = new UserMemoryRepository();
+        }
+        return UserMemoryRepository.instance;
+    }
+
     private final List<User> users;
 
     public UserMemoryRepository() {
