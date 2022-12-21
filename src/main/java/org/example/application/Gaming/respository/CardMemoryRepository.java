@@ -79,6 +79,31 @@ public class CardMemoryRepository implements CardRepository{
 
     @Override
     public Card addCard(Card card) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, card.getName());
+            ps.setFloat(2, card.getDamage());
+            ps.setString(3, card.getElement_type());
+            ps.setString(4, card.getCard_type());
+            ps.setNull(5, java.sql.Types.NULL);
+            ps.setNull(6, java.sql.Types.NULL);
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return this.getCard(generatedKeys.getInt(1));
+                }
+            }
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

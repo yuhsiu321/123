@@ -29,9 +29,14 @@ public class CardController {
             return response;
         }
         if(request.getMethod().equals(Method.POST.method)){
+            Response response = new Response();
+            response.setStatusCode(StatusCode.OK);
+            response.setContentType(ContentType.TEXT_PLAIN);
+            response.setContent(StatusCode.OK.message);
+            return response;
                 //User user = new User();
                 //user.setUsername(request.getToken());
-                return create(request);
+                //return create(request);
         }
 
 
@@ -51,7 +56,7 @@ public class CardController {
         //response.setAuthorization("username");
         String content = null;
         try {
-            content = objectMapper.writeValueAsString(cardRepository.findAll());
+            content = objectMapper.writeValueAsString(cardRepository.getCards());
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -71,7 +76,7 @@ public class CardController {
             throw new RuntimeException(e);
         }
 
-        card = cardRepository.save(card, request.getToken());
+        card = cardRepository.addCard(card);
 
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
