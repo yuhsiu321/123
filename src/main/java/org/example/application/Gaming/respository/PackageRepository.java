@@ -13,7 +13,7 @@ public interface PackageRepository {
 
     List<Package> getPackages();
 
-    Package addPackage(Package cardPackage);
+    Package addPackage();
 
     boolean deletePackage(int id);
 

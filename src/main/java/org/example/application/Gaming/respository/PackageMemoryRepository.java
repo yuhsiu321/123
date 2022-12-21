@@ -17,7 +17,7 @@ public class PackageMemoryRepository implements PackageRepository{
     private UserMemoryRepository userService;
     private CardMemoryRepository cardService;
 
-    private PackageMemoryRepository() {
+    public PackageMemoryRepository() {
         userService = UserMemoryRepository.getInstance();
         cardService = CardMemoryRepository.getInstance();
     }
@@ -99,11 +99,11 @@ public class PackageMemoryRepository implements PackageRepository{
     }
 
     @Override
-    public Package addPackage(Package cardPackage) {
+    public Package addPackage() {
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES(?,?);", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, cardPackage.getPrice());
+            ps.setInt(1, 5);
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {

@@ -85,6 +85,7 @@ public class UserMemoryRepository implements UserRepository {
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     user = new User();
+                    user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     rs.close();

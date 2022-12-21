@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CardRepository {
 
-    Card getCard(int id);
+    Card getCard(String id);
 
     List<Card> getCards();
 

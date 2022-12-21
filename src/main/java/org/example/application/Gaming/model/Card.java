@@ -1,36 +1,46 @@
 package org.example.application.Gaming.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.example.application.Gaming.type.CardType;
+import org.example.application.Gaming.type.ElementType;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class Card {
 
-    private String id;
 
-    private String card_type;
+    @Getter
+    String id;
 
-    private String element_type;
+    @Getter
+    String name;
 
-    private String name;
+    @Getter
+    float damage;
 
-    private Integer damage;
+    @Getter
+    ElementType elementType;
 
-    private boolean isLocked;
+    @Getter
+    CardType cardType;
+
+    @Getter
+    boolean isLocked;
+
+    public Card(String id, String name, float damage, ElementType elementType, boolean locked) {
+    }
 
 
     public boolean lock(boolean isLocked) {
         return isLocked;
     }
 
-    public Card(){
+    public Card(){}
 
-    }
-
-    public Card(String id, String name, Integer damage){
-        this.id = id;
-        this.name = name;
-        this.damage = damage;
-    }
 
     public String getId(){return id;}
 
@@ -40,23 +50,47 @@ public class Card {
 
     public void setName(String name){this.name = name;}
 
-    public Integer getDamage(){return damage;}
+    public float getDamage(){return damage;}
 
     public void setDamage(int damage){this.damage = damage;}
 
-    public String getCard_type() {
-        return card_type;
-    }
 
-    public void setCard_type(String card_type) {
-        this.card_type = card_type;
-    }
 
-    public String getElement_type() {
-        return element_type;
-    }
+    public static Card fromPrimitives(String id, String name, float damage, String cardTypeString, String elementTypeString, boolean locked) {
+        CardType cardType;
+        ElementType elementType;
+        Card card;
 
-    public void setElement_type(String element_type) {
-        this.element_type = element_type;
+        try {
+            cardType = CardType.valueOf(cardTypeString);
+        } catch (IllegalArgumentException e) {
+            cardType = CardType.MONSTER;
+        }
+
+        try {
+            elementType = ElementType.valueOf(elementTypeString);
+        } catch (IllegalArgumentException e) {
+            elementType = ElementType.REGULAR;
+        }
+
+        if (CardType.MONSTER.equals(cardType)) {
+            // Monster Card
+            card = MonsterCard.builder()
+                    .id(id)
+                    .name(name)
+                    .damage(damage)
+                    .elementType(elementType)
+                    .build();
+        } else {
+            // Otherwise it is a Spell Card
+            card = SpellCard.builder()
+                    .id(id)
+                    .name(name)
+                    .damage(damage)
+                    .elementType(elementType)
+                    .build();
+        }
+
+        return card;
     }
 }

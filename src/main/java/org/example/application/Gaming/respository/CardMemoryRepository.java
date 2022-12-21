@@ -28,21 +28,21 @@ public class CardMemoryRepository implements CardRepository{
 
 
     @Override
-    public Card getCard(int id) {
+    public Card getCard(String id) {
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
-            ps.setInt(1, id);
+            ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Card card = new Card();
-                card.setId(rs.getString("id"));// id
-                card.setName(rs.getString("name"));// name
-                card.setDamage(rs.getInt("damage")); // damage
-                card.setCard_type(rs.getString("card_type"));// card_type
-                card.setElement_type(rs.getString("element_type")); // element_type
-                card.lock(rs.getBoolean("is_locked"));// is_locked
+                Card card = Card.fromPrimitives(
+                        rs.getString(1), // id
+                        rs.getString(2), // name
+                        rs.getFloat(3), // damage
+                        rs.getString(4), // card_type
+                        rs.getString(5), // element_type
+                        rs.getBoolean(6)); // is_locked
 
 
                 rs.close();
@@ -81,13 +81,14 @@ public class CardMemoryRepository implements CardRepository{
     public Card addCard(Card card) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, card.getName());
-            ps.setFloat(2, card.getDamage());
-            ps.setString(3, card.getElement_type());
-            ps.setString(4, card.getCard_type());
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1,card.getId());
+            ps.setString(2, card.getName());
+            ps.setFloat(3, card.getDamage());
+            ps.setNull(4, java.sql.Types.NULL);
             ps.setNull(5, java.sql.Types.NULL);
             ps.setNull(6, java.sql.Types.NULL);
+            ps.setNull(7, java.sql.Types.NULL);
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
@@ -96,7 +97,7 @@ public class CardMemoryRepository implements CardRepository{
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return this.getCard(generatedKeys.getInt(1));
+                    return this.getCard(generatedKeys.getString(1));
                 }
             }
             ps.close();
@@ -109,6 +110,24 @@ public class CardMemoryRepository implements CardRepository{
 
     @Override
     public Card addCardToPackage(Card card, Package cardPackage) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE cards SET package_id = ? WHERE id = ?;");
+            ps.setInt(1, cardPackage.getId());
+            ps.setString(2, card.getId());
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+            return this.getCard(card.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
