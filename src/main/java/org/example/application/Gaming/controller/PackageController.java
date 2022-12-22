@@ -59,21 +59,20 @@ public class PackageController {
         Package cardPackage = packageRepository.addPackage();
 
         if (cardPackage != null) {
-
+            //System.out.println("Content:"+request.getContent());
             JsonObject jsonObject = JsonParser.parseString(request.getContent()).getAsJsonObject();
+            //System.out.println("jsonOb:"+jsonObject);
             JsonArray jsonArray = jsonObject.getAsJsonArray("cards");
+            //System.out.println(jsonArray);
             List<Card> cards = new ArrayList<>();
-
+            //System.out.println("Card:"+cards);
             for (JsonElement cardJsonElement : jsonArray) {
                 JsonObject cardJson = cardJsonElement.getAsJsonObject();
 
                 Card card = cardRepository.addCard(Card.fromPrimitives(
                         cardJson.get("Id").getAsString(),
                         cardJson.get("Name").getAsString(),
-                        cardJson.get("Damage").getAsFloat(),
-                        null,
-                        null,
-                        false
+                        cardJson.get("Damage").getAsFloat()
                 ));
 
                 card = cardRepository.addCardToPackage(card, cardPackage);
@@ -88,7 +87,7 @@ public class PackageController {
             response.setStatusCode(StatusCode.CREATED);
             response.setContentType(ContentType.APPLICATION_JSON);
             //response.setAuthorization("Basic "+username+"-mtcgToken");
-            //response.setAuthorization("Basic admin-mtcgToken");
+            response.setAuthorization("Basic admin-mtcgToken");
             response.setContent(gson.toJson(returnJsonObject));
             //response.setContent(StatusCode.CREATED.message);
 
@@ -102,24 +101,33 @@ public class PackageController {
     }
 
     private Response create2(Request request){
+
         //Package cardPackage = (Package) packageRepository.addPackage(gson.fromJson(request.getContent(), Package.class));
         ObjectMapper objectMapper = new ObjectMapper();
-        Package cardPackage = packageRepository.addPackage();
+        //Package cardPackage = packageRepository.addPackage();
 
         String json = request.getContent();
+        System.out.println("Content:"+json+"\n");
         Card card;
         try {
             card = objectMapper.readValue(json, Card.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        //System.out.println(card);
 
         card = cardRepository.addCard(card);
-        card = cardRepository.addCardToPackage(card,cardPackage);
+
+
+        /*for (int i=0;i<=5;i++) {
+            card = cardRepository.addCard(card);
+        }*/
+        //card = cardRepository.addCardToPackage(card,cardPackage);
 
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
+        response.setAuthorization("Basic admin-mtcgToken");
         //response.setAuthorization("Basic "+username+"-mtcgToken");
         //response.setAuthorization("Basic admin-mtcgToken");
         String content;
@@ -128,6 +136,7 @@ public class PackageController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(content);
         response.setContent(content);
 
         return response;

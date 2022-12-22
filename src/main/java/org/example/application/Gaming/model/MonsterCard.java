@@ -10,9 +10,9 @@ public class MonsterCard extends Card{
     @Getter
     CardType cardType = CardType.MONSTER;
 
-    @Builder
-    public MonsterCard(String id, String name, float damage, ElementType elementType, boolean locked) {
-        super(id, name, damage, elementType, locked);
-        this.cardType = CardType.MONSTER;
-    }
+    /*@Builder
+    public MonsterCard(String id, String name, float damage) {
+        super(id, name, damage);
+        //this.cardType = CardType.MONSTER;
+    }*/
 }

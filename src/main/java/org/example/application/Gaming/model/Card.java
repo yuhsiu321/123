@@ -1,6 +1,7 @@
 package org.example.application.Gaming.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Builder;
 import org.example.application.Gaming.type.CardType;
 import org.example.application.Gaming.type.ElementType;
 
@@ -30,8 +31,11 @@ public class Card {
 
     @Getter
     boolean isLocked;
-
-    public Card(String id, String name, float damage, ElementType elementType, boolean locked) {
+    @Builder
+    public Card(String id, String name, float damage) {
+        this.id = id;
+        this.name = name;
+        this.damage = damage;
     }
 
 
@@ -56,40 +60,15 @@ public class Card {
 
 
 
-    public static Card fromPrimitives(String id, String name, float damage, String cardTypeString, String elementTypeString, boolean locked) {
-        CardType cardType;
-        ElementType elementType;
+    public static Card fromPrimitives(String id, String name, float damage) {
         Card card;
 
-        try {
-            cardType = CardType.valueOf(cardTypeString);
-        } catch (IllegalArgumentException e) {
-            cardType = CardType.MONSTER;
-        }
 
-        try {
-            elementType = ElementType.valueOf(elementTypeString);
-        } catch (IllegalArgumentException e) {
-            elementType = ElementType.REGULAR;
-        }
-
-        if (CardType.MONSTER.equals(cardType)) {
-            // Monster Card
-            card = MonsterCard.builder()
-                    .id(id)
-                    .name(name)
-                    .damage(damage)
-                    .elementType(elementType)
-                    .build();
-        } else {
-            // Otherwise it is a Spell Card
-            card = SpellCard.builder()
-                    .id(id)
-                    .name(name)
-                    .damage(damage)
-                    .elementType(elementType)
-                    .build();
-        }
+        card = Card.builder()
+                .id(id)
+                .name(name)
+                .damage(damage)
+                .build();
 
         return card;
     }

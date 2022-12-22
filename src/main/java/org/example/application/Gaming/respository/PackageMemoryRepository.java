@@ -57,7 +57,7 @@ public class PackageMemoryRepository implements PackageRepository{
         try {
             Connection conn = Database.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, name, price FROM packages ORDER BY RANDOM() LIMIT 1;");
+            ResultSet rs = sm.executeQuery("SELECT id, price FROM packages ORDER BY RANDOM() LIMIT 1;");
 
             if (rs.next()) {
                 Package cardPackage = new Package();
@@ -102,7 +102,7 @@ public class PackageMemoryRepository implements PackageRepository{
     public Package addPackage() {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES(?,?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO packages(price) VALUES(?);", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, 5);
 
             int affectedRows = ps.executeUpdate();
@@ -115,7 +115,7 @@ public class PackageMemoryRepository implements PackageRepository{
                     return this.getPackage(generatedKeys.getInt(1));
                 }
             }
-            ps.close();
+            ps.execute();
             conn.close();
         } catch (SQLException ignored) {
 

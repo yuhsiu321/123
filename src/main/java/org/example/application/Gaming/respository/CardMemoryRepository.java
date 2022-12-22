@@ -31,7 +31,7 @@ public class CardMemoryRepository implements CardRepository{
     public Card getCard(String id) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage FROM cards WHERE id=?;");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -39,12 +39,7 @@ public class CardMemoryRepository implements CardRepository{
                 Card card = Card.fromPrimitives(
                         rs.getString(1), // id
                         rs.getString(2), // name
-                        rs.getFloat(3), // damage
-                        rs.getString(4), // card_type
-                        rs.getString(5), // element_type
-                        rs.getBoolean(6)); // is_locked
-
-
+                        rs.getFloat(3)); // damage
                 rs.close();
                 ps.close();
                 conn.close();
@@ -81,16 +76,12 @@ public class CardMemoryRepository implements CardRepository{
     public Card addCard(Card card) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name, damage, element_type, card_type, package_id, user_id) VALUES(?,?,?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name, damage) VALUES(?,?,?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,card.getId());
             ps.setString(2, card.getName());
             ps.setFloat(3, card.getDamage());
-            ps.setNull(4, java.sql.Types.NULL);
-            ps.setNull(5, java.sql.Types.NULL);
-            ps.setNull(6, java.sql.Types.NULL);
-            ps.setNull(7, java.sql.Types.NULL);
 
-            int affectedRows = ps.executeUpdate();
+            /*int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
                 return null;
             }
@@ -99,9 +90,10 @@ public class CardMemoryRepository implements CardRepository{
                 if (generatedKeys.next()) {
                     return this.getCard(generatedKeys.getString(1));
                 }
-            }
-            ps.close();
+            }*/
+            ps.execute();
             conn.close();
+            return card;
         } catch (SQLException e) {
             e.printStackTrace();
         }

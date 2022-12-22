@@ -10,9 +10,9 @@ public class SpellCard extends Card{
     @Getter
     CardType cardType = CardType.SPELL;
 
-    @Builder
-    public SpellCard(String id, String name, float damage, ElementType elementType, CardType cardType, boolean locked) {
-        super(id, name, damage, elementType, locked);
-        this.cardType = CardType.SPELL;
-    }
+    /*@Builder
+    public SpellCard(String id, String name, float damage) {
+        super(id, name, damage);
+        //this.cardType = CardType.SPELL;
+    }*/
 }
