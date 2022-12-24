@@ -18,7 +18,7 @@ public interface CardRepository {
 
     Card addCard(Card card);
 
-    Card addCardToPackage(Card card, Package cardPackage);
+    Card addCardToPackage(Card card, int pid);
 
     Card addCardToUser(Card card, User user);
 

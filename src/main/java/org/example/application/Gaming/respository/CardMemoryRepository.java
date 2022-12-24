@@ -36,7 +36,7 @@ public class CardMemoryRepository implements CardRepository{
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Card card = Card.fromPrimitives(
+                Card card = new Card(
                         rs.getString(1), // id
                         rs.getString(2), // name
                         rs.getFloat(3)); // damage
@@ -101,11 +101,11 @@ public class CardMemoryRepository implements CardRepository{
     }
 
     @Override
-    public Card addCardToPackage(Card card, Package cardPackage) {
+    public Card addCardToPackage(Card card, int pid) {
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("UPDATE cards SET package_id = ? WHERE id = ?;");
-            ps.setInt(1, cardPackage.getId());
+            ps.setInt(1, pid);
             ps.setString(2, card.getId());
 
             int affectedRows = ps.executeUpdate();
