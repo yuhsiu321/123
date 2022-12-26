@@ -51,4 +51,9 @@ public class Card {
 
     public void setDamage(float Damage){this.Damage = Damage;}
 
+    @Override
+    public String toString() {
+        return "Card [id=" + Id + ", name=" + Name + ", Damage="+Damage+ "]";
+    }
+
 }
