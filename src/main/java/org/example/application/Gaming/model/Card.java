@@ -2,8 +2,7 @@ package org.example.application.Gaming.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
-import org.example.application.Gaming.type.CardType;
-import org.example.application.Gaming.type.ElementType;
+
 
 import lombok.Getter;
 
@@ -18,10 +17,10 @@ public class Card {
 
     private float Damage;
 
-    private ElementType elementType;
+    private String elementType;
 
 
-    private CardType cardType;
+    private String cardType;
 
 
     private boolean isLocked;
@@ -53,7 +52,34 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card [id=" + Id + ", name=" + Name + ", Damage="+Damage+ "]";
+        return "Card [id=" + Id + ", name=" + Name + ", Damage="+Damage+" Card_type="+cardType+ "]";
     }
 
+    public String getElementType() {
+        return elementType;
+    }
+
+    public void setElementType(String Name) {
+        if (Name.contains("Water")){
+            this.elementType = "Water";
+        }else if(Name.contains("Fire")){
+            this.elementType = "Fire";
+        } else if (Name.contains("Regular")) {
+            this.elementType = "Normal";
+        }else{
+            this.elementType = "Normal";
+        }
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String Name) {
+        if (Name.contains("Spell")){
+            this.cardType = "Spell";
+        }else {
+            this.cardType = "Monster";
+        }
+    }
 }

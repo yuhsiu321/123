@@ -108,7 +108,7 @@ public class PackageController {
         for(Card card:cards){
             card = cardRepository.addCard(card);
             card = cardRepository.addCardToPackage(card,cardPackage.getId());
-            //System.out.println(card);
+            System.out.println(card);
         }
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
