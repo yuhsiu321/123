@@ -80,7 +80,7 @@ public class UserController {
             return response;
         }else{
             Response response = new Response();
-            response.setStatusCode(StatusCode.CREATED);
+            response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
             response.setContentType(ContentType.APPLICATION_JSON);
             String content = "username already exist!";
             response.setContent(content);

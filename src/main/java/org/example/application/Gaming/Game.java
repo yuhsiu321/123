@@ -1,9 +1,6 @@
 package org.example.application.Gaming;
 
-import org.example.application.Gaming.controller.CardController;
-import org.example.application.Gaming.controller.PackageController;
-import org.example.application.Gaming.controller.SessionController;
-import org.example.application.Gaming.controller.UserController;
+import org.example.application.Gaming.controller.*;
 import org.example.application.Gaming.respository.*;
 import org.example.server.Application;
 import org.example.server.dto.Request;
@@ -17,6 +14,7 @@ public class Game implements Application {
     private CardController cardController;
     private SessionController sessionController;
     private PackageController packageController;
+    private TransactionsController transactionsController;
 
 
     public Game() {
@@ -27,6 +25,7 @@ public class Game implements Application {
         this.cardController = new CardController(cardRepository);
         this.userController = new UserController(userRepository);
         this.sessionController = new SessionController(userRepository);
+        this.transactionsController = new TransactionsController(packageRepository,cardRepository);
     }
 
     @Override
@@ -37,6 +36,8 @@ public class Game implements Application {
             return packageController.handle(request);
         } else if (request.getPath().startsWith("/sessions")) {
             return sessionController.handle(request);
+        }else if(request.getPath().startsWith("/transactions/packages")){
+            return transactionsController.handle(request);
         }
 
         Response response = new Response();

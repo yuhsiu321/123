@@ -8,7 +8,7 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User getUser(int id);
+    User getUser(String username);
 
     User login(User user);
 
@@ -16,7 +16,7 @@ public interface UserRepository {
 
     User save(User user);
 
-    User updateUser(int id, User user);
+    User updateUser( User user);
 
     User delete(User user);
 }

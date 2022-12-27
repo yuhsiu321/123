@@ -48,11 +48,11 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(int id) {
+    public User getUser(String username) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, username, password, token, coins, status FROM users WHERE id=?;");
-            ps.setInt(1, id);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username=?;");
+            ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -109,9 +109,11 @@ public class UserMemoryRepository implements UserRepository {
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
+                    user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
                     user.setToken(rs.getString("token"));
+                    user.setCoin(rs.getInt("coins"));
                     rs.close();
                     ps.close();
                     conn.close();
@@ -143,18 +145,14 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User updateUser(int id, User user) {
-        User oldUser = (User) this.getUser(id);
+    public User updateUser(User user) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("UPDATE users SET username = ?, password = ?, token = ?, coins = ?, status = ? WHERE id = ?;");
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET coins = ? WHERE username = ?;");
 
-            ps.setString(1, user.getUsername() != null ? user.getUsername() : oldUser.getUsername());
-            ps.setString(2, user.getPassword() != null ? user.getPassword() : oldUser.getPassword());
-            ps.setString(3, user.getToken() != null ? user.getToken() : oldUser.getToken());
-            ps.setInt(4, user.getCoin());
-            ps.setString(5, user.getStatus() != null ? user.getStatus() : oldUser.getStatus());
-            ps.setInt(6, id);
+            ps.setInt(1, user.getCoin());
+
+            ps.setString(2,user.getUsername());
 
             int affectedRows = ps.executeUpdate();
 
@@ -165,7 +163,7 @@ public class UserMemoryRepository implements UserRepository {
                 return null;
             }
 
-            return this.getUser(id);
+            return this.findbyUsername(user.getUsername());
         } catch (SQLException e) {
             e.printStackTrace();
         }

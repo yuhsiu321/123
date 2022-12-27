@@ -151,20 +151,25 @@ public class PackageMemoryRepository implements PackageRepository{
 
     @Override
     public boolean addPackageToUser(Package cardPackage, User user) {
+        user = userService.findbyUsername(user.getUsername());
         // Not enough coins
-        if (user.getCoin() < cardPackage.getPrice()) return false;
+        if (user.getCoin() < 5){
+            return false;
+        }
 
+        System.out.println("you should not pass");
         // Update coin balance
         user.setCoin(user.getCoin() - cardPackage.getPrice());
 
         // Save user
-        userService.updateUser(user.getId(), user);
+        userService.updateUser(user);
+
 
         for (Card card : cardService.getCardsForPackage(cardPackage)) {
             cardService.addCardToUser(card, user);
         }
 
         this.deletePackage(cardPackage.getId());
-        return false;
+        return true;
     }
 }
