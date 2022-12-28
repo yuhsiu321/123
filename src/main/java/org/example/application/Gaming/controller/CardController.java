@@ -2,6 +2,7 @@ package org.example.application.Gaming.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.example.application.Gaming.model.Card;
 import org.example.application.Gaming.model.User;
 import org.example.application.Gaming.respository.CardRepository;
@@ -13,12 +14,16 @@ import org.example.server.http.Method;
 import org.example.server.http.StatusCode;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class CardController {
 
     private final CardRepository cardRepository;
     private final UserRepository userRepository;
+    Gson gson;
 
     public CardController(CardRepository cardRepository, UserRepository userRepository) {
+        gson = new Gson();
         this.cardRepository = cardRepository;
         this.userRepository = userRepository;
     }
@@ -44,21 +49,14 @@ public class CardController {
     }
 
     private Response readAll(Request request) {
-        ObjectMapper objectMapper = new ObjectMapper();
         User user ;
-        user =userRepository.findbyUsername(request.getToken());
-        System.out.println(user.getUsername());
+        user = userRepository.findbyUsername(request.getToken());
 
-        String content = null;
-        try {
-            content = objectMapper.writeValueAsString(cardRepository.getCardsForUser(user));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+        List<Card> cards = cardRepository.getCardsForUser(user);
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent(content);
+        response.setContent(gson.toJson(cards)+"\n");
 
         return response;
     }

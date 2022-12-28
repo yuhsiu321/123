@@ -39,7 +39,7 @@ public class Game implements Application {
         }else if(request.getPath().startsWith("/transactions/packages")){
             return transactionsController.handle(request);
         } else if (request.getPath().startsWith("/cards")) {
-            
+            return cardController.handle(request);
         }
 
         Response response = new Response();
