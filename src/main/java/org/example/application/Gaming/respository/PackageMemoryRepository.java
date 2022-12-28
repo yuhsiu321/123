@@ -156,8 +156,6 @@ public class PackageMemoryRepository implements PackageRepository{
         if (user.getCoin() < 5){
             return false;
         }
-
-        System.out.println("you should not pass");
         // Update coin balance
         user.setCoin(user.getCoin() - cardPackage.getPrice());
 

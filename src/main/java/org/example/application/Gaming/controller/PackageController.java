@@ -113,7 +113,7 @@ public class PackageController {
         Response response = new Response();
         response.setStatusCode(StatusCode.CREATED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent("cards create");
+        response.setContent("package create");
         return response;
     }
 

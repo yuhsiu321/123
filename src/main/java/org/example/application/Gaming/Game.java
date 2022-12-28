@@ -22,7 +22,7 @@ public class Game implements Application {
         PackageRepository packageRepository = new PackageMemoryRepository();
         CardRepository cardRepository = new CardMemoryRepository();
         this.packageController = new PackageController(packageRepository,cardRepository);
-        this.cardController = new CardController(cardRepository);
+        this.cardController = new CardController(cardRepository,userRepository);
         this.userController = new UserController(userRepository);
         this.sessionController = new SessionController(userRepository);
         this.transactionsController = new TransactionsController(packageRepository,cardRepository);
@@ -38,6 +38,8 @@ public class Game implements Application {
             return sessionController.handle(request);
         }else if(request.getPath().startsWith("/transactions/packages")){
             return transactionsController.handle(request);
+        } else if (request.getPath().startsWith("/cards")) {
+            
         }
 
         Response response = new Response();

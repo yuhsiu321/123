@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.application.Gaming.model.Card;
 import org.example.application.Gaming.model.User;
 import org.example.application.Gaming.respository.CardRepository;
+import org.example.application.Gaming.respository.UserRepository;
 import org.example.server.dto.Request;
 import org.example.server.dto.Response;
 import org.example.server.http.ContentType;
@@ -15,28 +16,23 @@ import org.jetbrains.annotations.NotNull;
 public class CardController {
 
     private final CardRepository cardRepository;
+    private final UserRepository userRepository;
 
-    public CardController(CardRepository cardRepository) {
+    public CardController(CardRepository cardRepository, UserRepository userRepository) {
         this.cardRepository = cardRepository;
+        this.userRepository = userRepository;
     }
 
     public Response handle(Request request){
-        if (request.getToken() == null || !"admin".equalsIgnoreCase(request.getToken())) {
-            Response response = new Response();
-            response.setStatusCode(StatusCode.UNAUTHORIZED);
-            response.setContentType(ContentType.TEXT_PLAIN);
-            response.setContent(StatusCode.UNAUTHORIZED.message);
-            return response;
-        }
-        if(request.getMethod().equals(Method.POST.method)){
-            Response response = new Response();
-            response.setStatusCode(StatusCode.OK);
-            response.setContentType(ContentType.TEXT_PLAIN);
-            response.setContent(StatusCode.OK.message);
-            return response;
-                //User user = new User();
-                //user.setUsername(request.getToken());
-                //return create(request);
+        if(request.getMethod().equals(Method.GET.method)){
+            if (request.getToken() == null ) {
+                Response response = new Response();
+                response.setStatusCode(StatusCode.UNAUTHORIZED);
+                response.setContentType(ContentType.TEXT_PLAIN);
+                response.setContent(StatusCode.UNAUTHORIZED.message);
+                return response;
+            }
+            return readAll(request);
         }
 
 
@@ -47,51 +43,23 @@ public class CardController {
         return response;
     }
 
-    private Response readAll() {
+    private Response readAll(Request request) {
         ObjectMapper objectMapper = new ObjectMapper();
+        User user ;
+        user =userRepository.findbyUsername(request.getToken());
+        System.out.println(user.getUsername());
 
+        String content = null;
+        try {
+            content = objectMapper.writeValueAsString(cardRepository.getCardsForUser(user));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);
         response.setContentType(ContentType.APPLICATION_JSON);
-        //response.setAuthorization("username");
-        String content = null;
-        try {
-            content = objectMapper.writeValueAsString(cardRepository.getCards());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
         response.setContent(content);
 
         return response;
     }
-
-    private Response create(Request request){
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String json = request.getContent();
-        Card card;
-        try {
-            card = objectMapper.readValue(json, Card.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        card = cardRepository.addCard(card);
-
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        //response.setAuthorization("Basic "+username+"-mtcgToken");
-        //response.setAuthorization("Basic admin-mtcgToken");
-        String content;
-        try {
-            content = objectMapper.writeValueAsString(card);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        response.setContent(content);
-
-        return response;
-    }
-
 }

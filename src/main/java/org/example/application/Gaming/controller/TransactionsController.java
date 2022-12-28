@@ -55,7 +55,7 @@ public class TransactionsController {
         Response response = new Response();
         response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
         response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent("cards acquire false");
+        response.setContent("Acquirement fail");
         return response;
     }
 }

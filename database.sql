@@ -8,7 +8,11 @@ CREATE TABLE users
     status        VARCHAR(255),
     password      VARCHAR(255) NOT NULL,
     token         VARCHAR(255) NULL,
-    coins         INT          NOT NULL DEFAULT 20
+    coins         INT          NOT NULL DEFAULT 20,
+    total_battles INT                   DEFAULT 0,
+    won_battles   INT                   DEFAULT 0,
+    lost_battles  INT                   DEFAULT 0,
+    elo           INT                   DEFAULT 1000
 );
 
 /* Packages */
