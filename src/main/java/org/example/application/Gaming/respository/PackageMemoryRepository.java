@@ -57,7 +57,7 @@ public class PackageMemoryRepository implements PackageRepository{
         try {
             Connection conn = Database.getInstance().getConnection();
             Statement sm = conn.createStatement();
-            ResultSet rs = sm.executeQuery("SELECT id, price FROM packages ORDER BY RANDOM() LIMIT 1;");
+            ResultSet rs = sm.executeQuery("SELECT id, price FROM packages ORDER BY id;");
 
             if (rs.next()) {
                 Package cardPackage = new Package();

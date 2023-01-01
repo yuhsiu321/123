@@ -30,8 +30,9 @@ public class Card {
         this.Damage = Damage;
     }
 
+    public void setLock(boolean isLocked){this.isLocked = isLocked;}
 
-    public boolean lock(boolean isLocked) {
+    public boolean lock() {
         return isLocked;
     }
 

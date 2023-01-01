@@ -72,7 +72,7 @@ public class CardMemoryRepository implements CardRepository{
                 card.setDamage(rs.getInt("damage"));
                 card.setCardType(rs.getString("card_type"));
                 card.setElementType(rs.getString("element_type"));
-                card.lock(rs.getBoolean("is_locked"));
+                card.setLock(rs.getBoolean("is_locked"));
                 cards.add(card);
             }
 
@@ -103,7 +103,7 @@ public class CardMemoryRepository implements CardRepository{
                 card.setDamage(rs.getInt("damage"));
                 card.setCardType(rs.getString("card_type"));
                 card.setElementType(rs.getString("element_type"));
-                card.lock(rs.getBoolean("is_locked"));
+                card.setLock(rs.getBoolean("is_locked"));
                 cards.add(card);
             }
 
@@ -134,7 +134,7 @@ public class CardMemoryRepository implements CardRepository{
                 card.setDamage(rs.getInt("damage"));
                 card.setCardType(rs.getString("card_type"));
                 card.setElementType(rs.getString("element_type"));
-                card.lock(rs.getBoolean("is_locked"));
+                card.setLock(rs.getBoolean("is_locked"));
                 cards.add(card);
             }
 
@@ -163,16 +163,6 @@ public class CardMemoryRepository implements CardRepository{
             ps.setString(5, card.getCardType());
 
 
-            /*int affectedRows = ps.executeUpdate();
-            if (affectedRows == 0) {
-                return null;
-            }
-
-            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return this.getCard(generatedKeys.getString(1));
-                }
-            }*/
             ps.execute();
             conn.close();
             return card;
@@ -230,11 +220,52 @@ public class CardMemoryRepository implements CardRepository{
 
     @Override
     public Card lockCard(Card card, boolean isLocked) {
+
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE cards SET is_locked = ? WHERE id = ?;");
+            ps.setBoolean(1, isLocked);
+            ps.setString(2, card.getId());
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+            return this.getCard(card.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public boolean deleteCard(int id) {
+    public boolean deleteCard(String id) {
+
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM cards WHERE id = ?;");
+            ps.setString(1, id);
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return false;
+            }
+
+            ps.close();
+            conn.close();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

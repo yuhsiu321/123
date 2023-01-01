@@ -24,7 +24,7 @@ public interface CardRepository {
 
     Card lockCard(Card card, boolean isLocked);
 
-    boolean deleteCard(int id);
+    boolean deleteCard(String id);
 
 
 }

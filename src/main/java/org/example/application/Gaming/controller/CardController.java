@@ -55,7 +55,6 @@ public class CardController {
         List<Card> cards = cardRepository.getCardsForUser(user);
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);
-        response.setContentType(ContentType.APPLICATION_JSON);
         response.setContent(gson.toJson(cards)+"\n");
 
         return response;
