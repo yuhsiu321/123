@@ -38,15 +38,18 @@ public class ScoreController {
 
     private Response readAll(Request request){
         User user;
-        user= userRepository.setRankbyUsername(request.getToken());
+        user= userRepository.getRankbyUsername(request.getToken());
+        userRepository.setRank(user);
         String returnBody;
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(request.getToken());
+        stringBuilder.append(user.getUsername());
         stringBuilder
-                .append("( Rank : ")
+                .append("( ELO : ")
+                .append(user.getElo())
+                .append(", RANK : ")
                 .append(user.getRank())
-                .append("), ");
+                .append(") ");
         returnBody = stringBuilder.toString();
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);

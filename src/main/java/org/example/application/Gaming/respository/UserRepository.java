@@ -20,6 +20,7 @@ public interface UserRepository {
     User updateUsertoLogin( User user);
     User updateUser(User user,String username);
     User findStatbyUsername(String username);
-    User setRankbyUsername(String username);
+    User getRankbyUsername(String username);
+    User setRank(User user);
     User delete(User user);
 }

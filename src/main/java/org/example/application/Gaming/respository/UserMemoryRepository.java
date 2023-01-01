@@ -123,14 +123,16 @@ public class UserMemoryRepository implements UserRepository {
         return null;
     }
     @Override
-    public User setRankbyUsername(String username){
+    public User getRankbyUsername(String username){
         try{
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT RANK() OVER(ORDER BY elo) AS rank From users WHERE username=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT username, elo,RANK() OVER(ORDER BY elo) AS rank From users WHERE username=?;");
             ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setElo(rs.getInt("elo"));
                     user.setRank(rs.getInt("rank"));
                     rs.close();
                     ps.close();
@@ -140,6 +142,32 @@ public class UserMemoryRepository implements UserRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
+    public User setRank(User user){
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET rank = ? WHERE username = ?;");
+
+            ps.setInt(1, user.getRank());
+
+            ps.setString(2,user.getUsername());
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            return this.findbyUsername(user.getUsername());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
