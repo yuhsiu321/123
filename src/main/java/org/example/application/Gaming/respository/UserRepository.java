@@ -16,7 +16,8 @@ public interface UserRepository {
 
     User save(User user);
 
-    User updateUser( User user);
-
+    User updateCoin( User user);
+    User updateUsertoLogin( User user);
+    User updateUser(User user,String username);
     User delete(User user);
 }

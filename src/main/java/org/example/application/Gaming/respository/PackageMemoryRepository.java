@@ -160,7 +160,7 @@ public class PackageMemoryRepository implements PackageRepository{
         user.setCoin(user.getCoin() - cardPackage.getPrice());
 
         // Save user
-        userService.updateUser(user);
+        userService.updateCoin(user);
 
 
         for (Card card : cardService.getCardsForPackage(cardPackage)) {

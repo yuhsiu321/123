@@ -47,7 +47,9 @@ public class SessionController {
         response.setContentType(ContentType.APPLICATION_JSON);
         String content;
         try {
-            content = objectMapper.writeValueAsString(userRepository.login(user));
+            userRepository.login(user);
+            userRepository.updateUsertoLogin(user);
+            content = objectMapper.writeValueAsString(userRepository.findbyUsername(user.getUsername()));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

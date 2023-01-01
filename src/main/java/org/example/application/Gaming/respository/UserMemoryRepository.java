@@ -111,9 +111,13 @@ public class UserMemoryRepository implements UserRepository {
                     User user = new User();
                     user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
+                    user.setStatus(rs.getString("status"));
                     user.setPassword(rs.getString("password"));
                     user.setToken(rs.getString("token"));
                     user.setCoin(rs.getInt("coins"));
+                    user.setName(rs.getString("name"));
+                    user.setBio(rs.getString("bio"));
+                    user.setImage(rs.getString("image"));
                     rs.close();
                     ps.close();
                     conn.close();
@@ -145,7 +149,7 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateCoin(User user) {
         try {
             Connection conn = Database.getInstance().getConnection();
             PreparedStatement ps = conn.prepareStatement("UPDATE users SET coins = ? WHERE username = ?;");
@@ -169,7 +173,58 @@ public class UserMemoryRepository implements UserRepository {
         }
         return null;
     }
+    @Override
+    public User updateUsertoLogin(User user) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET status=? WHERE username = ?;");
 
+            ps.setString(1, "login");
+
+            ps.setString(2,user.getUsername());
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            return this.findbyUsername(user.getUsername());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public User updateUser(User user,String username) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET name = ?,bio = ?, image = ? WHERE username = ?;");
+
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getBio());
+            ps.setString(3, user.getImage());
+            ps.setString(4,username);
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows == 0) {
+                return null;
+            }
+
+            return this.findbyUsername(user.getUsername());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public User delete(User user) {
         if (this.users.contains(user)) {

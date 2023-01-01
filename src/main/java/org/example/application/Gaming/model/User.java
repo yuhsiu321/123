@@ -20,6 +20,10 @@ public class User {
 
     private int coin = 20;
 
+    private String Name;
+    private String Bio;
+    private String Image;
+
     public User() {
     }
 
@@ -73,5 +77,29 @@ public class User {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getBio() {
+        return Bio;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setBio(String bio) {
+        this.Bio = bio;
+    }
+
+    public void setImage(String image) {
+        this.Image = image;
+    }
+
+    public void setName(String name) {
+        this.Name = name;
     }
 }
