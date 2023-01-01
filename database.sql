@@ -15,7 +15,8 @@ CREATE TABLE users
     elo           INT                   DEFAULT 100,
     Name          VARCHAR(255),
     Bio           VARCHAR(255),
-    Image         VARCHAR(255)
+    Image         VARCHAR(255),
+    rank          INT
 );
 
 /* Packages */

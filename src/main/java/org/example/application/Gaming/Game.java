@@ -16,6 +16,8 @@ public class Game implements Application {
     private PackageController packageController;
     private TransactionsController transactionsController;
     private DeckControler deckControler;
+    private StatController statController;
+    private ScoreController scoreController;
 
 
     public Game() {
@@ -29,6 +31,8 @@ public class Game implements Application {
         this.sessionController = new SessionController(userRepository);
         this.transactionsController = new TransactionsController(packageRepository,cardRepository);
         this.deckControler = new DeckControler(deckRepository,userRepository,cardRepository);
+        this.statController = new StatController(userRepository);
+        this.scoreController = new ScoreController(userRepository);
     }
 
     @Override
@@ -45,6 +49,10 @@ public class Game implements Application {
             return cardController.handle(request);
         } else if(request.getPath().startsWith("/deck")){
             return deckControler.handle(request);
+        } else if(request.getPath().equals("/stats")){
+            return statController.handle(request);
+        } else if (request.getPath().equals("/score")) {
+            return scoreController.handle(request);
         }
 
         Response response = new Response();

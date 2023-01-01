@@ -23,7 +23,8 @@ public class User {
     private String Name;
     private String Bio;
     private String Image;
-
+    private Integer elo = 100;
+    private Integer rank;
     public User() {
     }
 
@@ -101,5 +102,21 @@ public class User {
 
     public void setName(String name) {
         this.Name = name;
+    }
+
+    public Integer getElo() {
+        return elo;
+    }
+
+    public void setElo(Integer elo) {
+        this.elo = elo;
+    }
+
+    public Integer getRank() {
+        return rank;
+    }
+
+    public void setRank(Integer rank) {
+        this.rank = rank;
     }
 }

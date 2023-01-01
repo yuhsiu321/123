@@ -101,6 +101,50 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
+    public User findStatbyUsername(String username){
+        try{
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT username,elo From users WHERE username=?;");
+            ps.setString(1,username);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setElo(rs.getInt("elo"));
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    @Override
+    public User setRankbyUsername(String username){
+        try{
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT RANK() OVER(ORDER BY elo) AS rank From users WHERE username=?;");
+            ps.setString(1,username);
+            try(ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setRank(rs.getInt("rank"));
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                    return user;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public User findbyUsername(String username){
         try {
             Connection conn = Database.getInstance().getConnection();
