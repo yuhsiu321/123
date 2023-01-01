@@ -18,7 +18,7 @@ public class DeckMemoryRepository implements DeckRepository{
 
     private CardMemoryRepository cardMemoryRepository;
 
-    private DeckMemoryRepository(){cardMemoryRepository = CardMemoryRepository.getInstance();}
+    public DeckMemoryRepository(){cardMemoryRepository = CardMemoryRepository.getInstance();}
 
     public static  DeckMemoryRepository getInstance(){
         if(DeckMemoryRepository.instance == null){
@@ -60,18 +60,15 @@ public class DeckMemoryRepository implements DeckRepository{
 
     @Override
     public boolean addCardsWithIdsToDeck(String[] ids, User user) {
-        List<Card> userCards = cardMemoryRepository.getCardsForUser(user);
+
         List<Card> newDeck = new ArrayList<>();
 
         // A deck can only consist of 4 cards
         if (ids.length == 4) {
-            for (String id : ids) {
-                // Check if the card belongs to the user
-                List<Card> filteredCards = userCards.stream().filter(card -> card.getId() == id).collect(Collectors.toList());
-                if (filteredCards.size() == 1) {
-                    Card card = filteredCards.get(0);
-                    newDeck.add(card);
-                }
+            for (int i =0; i<=(ids.length-1);i++) {
+                Card card;
+                card = cardMemoryRepository.getCardbyid(user, ids[i]);
+                newDeck.add(card);
             }
             // Only when all cards belong to the user
             if (newDeck.size() == 4) {

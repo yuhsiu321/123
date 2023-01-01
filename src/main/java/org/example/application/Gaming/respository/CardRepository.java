@@ -26,5 +26,6 @@ public interface CardRepository {
 
     boolean deleteCard(String id);
 
+    Card getCardbyid(User user, String id);
 
 }

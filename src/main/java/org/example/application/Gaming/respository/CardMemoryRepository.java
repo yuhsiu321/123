@@ -88,6 +88,35 @@ public class CardMemoryRepository implements CardRepository{
     }
 
     @Override
+    public Card getCardbyid(User user, String id){
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage, card_type, element_type, is_locked FROM cards WHERE user_id = ? AND id = ?;");
+            ps.setInt(1, user.getId());
+            ps.setString(2,id);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()) {
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getInt("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setElementType(rs.getString("element_type"));
+                card.setLock(rs.getBoolean("is_locked"));
+                rs.close();
+                ps.close();
+                conn.close();
+
+                return card;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public List<Card> getCardsForUser(User user) {
         try {
             Connection conn = Database.getInstance().getConnection();

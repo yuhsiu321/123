@@ -15,17 +15,20 @@ public class Game implements Application {
     private SessionController sessionController;
     private PackageController packageController;
     private TransactionsController transactionsController;
+    private DeckControler deckControler;
 
 
     public Game() {
         UserRepository userRepository = new UserMemoryRepository();
         PackageRepository packageRepository = new PackageMemoryRepository();
         CardRepository cardRepository = new CardMemoryRepository();
+        DeckRepository deckRepository = new DeckMemoryRepository();
         this.packageController = new PackageController(packageRepository,cardRepository);
         this.cardController = new CardController(cardRepository,userRepository);
         this.userController = new UserController(userRepository);
         this.sessionController = new SessionController(userRepository);
         this.transactionsController = new TransactionsController(packageRepository,cardRepository);
+        this.deckControler = new DeckControler(deckRepository,userRepository,cardRepository);
     }
 
     @Override
@@ -40,6 +43,8 @@ public class Game implements Application {
             return transactionsController.handle(request);
         } else if (request.getPath().startsWith("/cards")) {
             return cardController.handle(request);
+        } else if(request.getPath().startsWith("/deck")){
+            return deckControler.handle(request);
         }
 
         Response response = new Response();

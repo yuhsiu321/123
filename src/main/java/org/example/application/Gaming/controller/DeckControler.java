@@ -12,18 +12,21 @@ import org.example.server.http.ContentType;
 import org.example.server.http.Method;
 import org.example.server.http.StatusCode;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DeckControler {
     private final DeckRepository deckRepository;
     private final UserRepository userRepository;
+    private final CardRepository cardRepository;
 
     Gson gson;
 
-    public DeckControler(DeckRepository deckRepository,UserRepository userRepository) {
+    public DeckControler(DeckRepository deckRepository,UserRepository userRepository,CardRepository cardRepository) {
         gson = new Gson();
         this.deckRepository = deckRepository;
         this.userRepository = userRepository;
+        this.cardRepository = cardRepository;
     }
 
     public Response handle(Request request){
@@ -82,18 +85,32 @@ public class DeckControler {
         }else{
             returnBody = gson.toJson(cards);
         }
-        Response response = new Response();
-        response.setStatusCode(StatusCode.OK);
-        response.setContent(returnBody);
-
-        return response;
+        if(cards == null){
+            Response response = new Response();
+            response.setStatusCode(StatusCode.OK);
+            response.setContent("No cards in the Deck");
+            return response;
+        }
+        else {
+            Response response = new Response();
+            response.setStatusCode(StatusCode.OK);
+            response.setContent(returnBody);
+            return response;
+        }
     }
 
     public Response put(Request request){
         User user;
         user = userRepository.findbyUsername(request.getToken());
         String[] ids = gson.fromJson(request.getContent(), String[].class);
-        System.out.println(ids.toString());
+        Card card = cardRepository.getCardbyid(user, ids[0]);
+        if(card == null){
+            List<Card> cards = deckRepository.getDeck(user);
+            Response response = new Response();
+            response.setStatusCode(StatusCode.BAD_REQUEST);
+            response.setContent(gson.toJson(cards));
+            return response;
+        }
         boolean result = deckRepository.addCardsWithIdsToDeck(ids, user);
         if(result){
             List<Card> cards = deckRepository.getDeck(user);
