@@ -48,11 +48,11 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     @Override
-    public User getUser(String username) {
+    public User getUser(int Id) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE username=?;");
-            ps.setString(1, username);
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id=?;");
+            ps.setInt(1, Id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -170,6 +170,80 @@ public class UserMemoryRepository implements UserRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public User addStatForUser(User user, int stat) {
+        try {
+            Connection conn = Database.getInstance().getConnection();
+            PreparedStatement ps;
+
+            if (stat > 0) {
+                // Win
+                ps = conn.prepareStatement("UPDATE users SET won_battles = won_battles+1, total_battles = total_battles+1 WHERE id = ?;");
+            } else if (stat < 0) {
+                // Loss
+                ps = conn.prepareStatement("UPDATE users SET lost_battles = lost_battles+1, total_battles = total_battles+1 WHERE id = ?;");
+            } else {
+                // Tie
+                ps = conn.prepareStatement("UPDATE users SET total_battles = total_battles+1 WHERE id = ?;");
+            }
+
+            ps.setInt(1, user.getId());
+
+            int affectedRows = ps.executeUpdate();
+
+            ps.close();
+            conn.close();
+
+            if (affectedRows > 0) {
+                return this.findStatbyUsername(user.getUsername());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean updateEloForPlayers(User playerA, User playerB, int pA, int pB) {
+        playerA = findStatbyUsername(playerA.getUsername());
+        playerB = findStatbyUsername(playerB.getUsername());
+        int eloA = playerA.getElo();
+        int eloB = playerB.getElo();
+
+
+        int rEloA = eloA+pA;
+        int rEloB = eloB+pB;
+
+        try {
+            Connection conn = Database.getInstance().getConnection();
+
+            PreparedStatement ps = conn.prepareStatement("UPDATE users SET elo = ? WHERE id = ?;");
+            ps.setInt(1, rEloA);
+            ps.setInt(2, playerA.getId());
+            if (ps.executeUpdate() <= 0) {
+                return false;
+            }
+
+            ps = conn.prepareStatement("UPDATE users SET elo = ? WHERE id = ?;");
+            ps.setInt(1, rEloB);
+            ps.setInt(2, playerB.getId());
+            if (ps.executeUpdate() <= 0) {
+                return false;
+            }
+
+            ps.close();
+            conn.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     @Override

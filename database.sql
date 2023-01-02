@@ -45,3 +45,46 @@ CREATE TABLE cards
     CONSTRAINT fk_package FOREIGN KEY (package_id) REFERENCES packages (id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+/*Battle*/
+
+DROP TABLE IF EXISTS battles CASCADE;
+CREATE TABLE battles
+(
+    id       SERIAL PRIMARY KEY,
+    p1 INT,
+    p2 INT,
+    winner   INT,
+    finished BOOLEAN DEFAULT FALSE,
+    CONSTRAINT fk_player_a FOREIGN KEY (player_a) REFERENCES users (id),
+    CONSTRAINT fk_player_b FOREIGN KEY (player_b) REFERENCES users (id),
+    CONSTRAINT winner FOREIGN KEY (winner) REFERENCES users (id)
+);
+
+DROP TABLE IF EXISTS battle_rounds CASCADE;
+CREATE TABLE battle_rounds
+(
+    id          SERIAL PRIMARY KEY,
+    battle_id   INT NOT NULL,
+    card_1      VARCHAR(255) NOT NULL,
+    card_2      VARCHAR(255) NOT NULL,
+    winner_card VARCHAR(255),
+    CONSTRAINT fk_battle FOREIGN KEY (battle_id) REFERENCES battles (id),
+    CONSTRAINT fk_card_a FOREIGN KEY (card_a) REFERENCES cards (id),
+    CONSTRAINT fk_card_b FOREIGN KEY (card_b) REFERENCES cards (id),
+    CONSTRAINT fk_winner_card FOREIGN KEY (winner_card) REFERENCES cards (id)
+);
+
+/* Trades */
+
+DROP TABLE IF EXISTS trades CASCADE;
+CREATE TABLE trades
+(
+    id       SERIAL PRIMARY KEY,
+    card_a   VARCHAR(255) NOT NULL,
+    card_b   VARCHAR(255),
+    coins    INT     DEFAULT 0,
+    accepted BOOLEAN DEFAULT NULL,
+    CONSTRAINT fk_card_a FOREIGN KEY (card_a) REFERENCES cards (id),
+    CONSTRAINT fk_card_b FOREIGN KEY (card_b) REFERENCES cards (id)
+);

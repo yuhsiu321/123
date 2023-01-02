@@ -8,7 +8,7 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    User getUser(String username);
+    User getUser(int Id);
 
     User login(User user);
 
@@ -22,5 +22,7 @@ public interface UserRepository {
     User findStatbyUsername(String username);
     User getRankbyUsername(String username);
     User setRank(User user);
+    boolean updateEloForPlayers(User playerA, User playerB, int pA, int pB);
+    User addStatForUser(User user, int stat);
     User delete(User user);
 }

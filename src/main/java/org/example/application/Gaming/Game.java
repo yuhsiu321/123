@@ -18,6 +18,7 @@ public class Game implements Application {
     private DeckControler deckControler;
     private StatController statController;
     private ScoreController scoreController;
+    private BattleController battleController;
 
 
     public Game() {
@@ -25,6 +26,7 @@ public class Game implements Application {
         PackageRepository packageRepository = new PackageMemoryRepository();
         CardRepository cardRepository = new CardMemoryRepository();
         DeckRepository deckRepository = new DeckMemoryRepository();
+        BattleRepository battleRepository = new BattleMemoryRepository();
         this.packageController = new PackageController(packageRepository,cardRepository);
         this.cardController = new CardController(cardRepository,userRepository);
         this.userController = new UserController(userRepository);
@@ -33,6 +35,7 @@ public class Game implements Application {
         this.deckControler = new DeckControler(deckRepository,userRepository,cardRepository);
         this.statController = new StatController(userRepository);
         this.scoreController = new ScoreController(userRepository);
+        this.battleController = new BattleController(battleRepository,userRepository);
     }
 
     @Override
@@ -53,6 +56,8 @@ public class Game implements Application {
             return statController.handle(request);
         } else if (request.getPath().equals("/score")) {
             return scoreController.handle(request);
+        } else if (request.getPath().equals("/battles")) {
+            return battleController.handle(request);
         }
 
         Response response = new Response();

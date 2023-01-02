@@ -6,6 +6,8 @@ import lombok.Builder;
 
 import lombok.Getter;
 
+import java.util.Objects;
+
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class Card {
 
@@ -82,5 +84,50 @@ public class Card {
         }else {
             this.cardType = "Monster";
         }
+    }
+
+    public boolean winsAgainst(Card card){
+        if(Objects.equals(this.getCardType(), "Monster") && Objects.equals(card.getCardType(), "Monster")){
+            if(this.getName().contains("Dragon")&&card.getName().contains("Goblin")){
+                return true;
+            }
+            if(this.getName().contains("Wizard")&&card.getName().contains("Ork")){
+                return true;
+            }
+            if(this.getName().contains("FireElf")&&card.getName().contains("Dragon")){
+                return true;
+            }
+        }
+        if(Objects.equals(this.getCardType(),"Spell")&&Objects.equals(card.getCardType(),"Monster")){
+            if(Objects.equals(this.getElementType(),"Water")&&card.getName().contains("Knight")){
+                return true;
+            }
+        }
+        if(Objects.equals(this.getCardType(), "Monster") && Objects.equals(card.getCardType(), "Spell")){
+            if(this.getName().contains("Kraken")){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public float calculateDamage(Card card){
+        // only for spell cards
+        if(Objects.equals(this.getCardType(),"Spell")){
+            //Effective
+            if((Objects.equals(this.getElementType(),"Water")&&Objects.equals(card.getElementType(),"Fire"))||
+                    (Objects.equals(this.getElementType(),"Fire")&&Objects.equals(card.getElementType(),"Normal"))||
+                    (Objects.equals(this.getElementType(),"Normal")&&Objects.equals(card.getElementType(),"Water"))){
+                return this.getDamage()*2;
+            }
+            //not effective
+            if((Objects.equals(this.getElementType(),"Fire")&&Objects.equals(card.getElementType(),"Water"))||
+                    (Objects.equals(this.getElementType(),"Normal")&&Objects.equals(card.getElementType(),"Fire"))||
+                    (Objects.equals(this.getElementType(),"Water")&&Objects.equals(card.getElementType(),"Normal"))){
+                return this.getDamage()/2;
+            }
+        }
+        //no effect
+        return this.getDamage();
     }
 }
