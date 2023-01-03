@@ -49,7 +49,7 @@ public class SessionController {
         try {
             userRepository.login(user);
             userRepository.updateUsertoLogin(user);
-            content = objectMapper.writeValueAsString(userRepository.findbyUsername(user.getUsername()));
+            content = objectMapper.writeValueAsString(userRepository.login(user));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

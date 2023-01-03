@@ -155,14 +155,14 @@ public class BattleMemoryRepository implements BattleRepository{
 
             if (battle1.getP1() == null) {
                 // Set user as playerA
-                PreparedStatement ps = conn.prepareStatement("UPDATE battles SET player_a = ? WHERE id = ?;");
+                PreparedStatement ps = conn.prepareStatement("UPDATE battles SET p1 = ? WHERE id = ?;");
                 ps.setInt(1, user.getId());
                 ps.setInt(2, battle1.getId());
                 affectedRows = ps.executeUpdate();
                 ps.close();
             } else if (battle1.getP2() == null) {
                 // Set user as playerB
-                PreparedStatement ps = conn.prepareStatement("UPDATE battles SET player_b = ? WHERE id = ?;");
+                PreparedStatement ps = conn.prepareStatement("UPDATE battles SET p2 = ? WHERE id = ?;");
                 ps.setInt(1, user.getId());
                 ps.setInt(2, battle1.getId());
                 affectedRows = ps.executeUpdate();
@@ -229,7 +229,8 @@ public class BattleMemoryRepository implements BattleRepository{
                 ps.setInt(1, winner.getId());
             } else {
                 // It's a draw.
-                ps.setNull(1, java.sql.Types.NULL);
+                //ps.setNull(1, java.sql.Types.NULL);
+                ps.setInt(1,0);
             }
 
             int affectedRows = ps.executeUpdate();
