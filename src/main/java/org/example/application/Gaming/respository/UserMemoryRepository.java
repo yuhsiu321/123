@@ -63,6 +63,7 @@ public class UserMemoryRepository implements UserRepository {
                 user.setToken(rs.getString("token"));
                 user.setCoin(rs.getInt("coins"));
                 user.setStatus(rs.getString("status"));
+                user.setElo(rs.getInt("elo"));
                 rs.close();
                 ps.close();
                 conn.close();

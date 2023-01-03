@@ -14,12 +14,12 @@ public class PackageMemoryRepository implements PackageRepository{
 
     private static PackageMemoryRepository instance;
 
-    private UserMemoryRepository userService;
-    private CardMemoryRepository cardService;
+    private final UserMemoryRepository userMemoryRepository;
+    private final CardMemoryRepository cardMemoryRepository;
 
     public PackageMemoryRepository() {
-        userService = UserMemoryRepository.getInstance();
-        cardService = CardMemoryRepository.getInstance();
+        userMemoryRepository = UserMemoryRepository.getInstance();
+        cardMemoryRepository = CardMemoryRepository.getInstance();
     }
 
     public static PackageMemoryRepository getInstance() {
@@ -151,7 +151,7 @@ public class PackageMemoryRepository implements PackageRepository{
 
     @Override
     public boolean addPackageToUser(Package cardPackage, User user) {
-        user = userService.findbyUsername(user.getUsername());
+        user = userMemoryRepository.findbyUsername(user.getUsername());
         // Not enough coins
         if (user.getCoin() < 5){
             return false;
@@ -160,11 +160,11 @@ public class PackageMemoryRepository implements PackageRepository{
         user.setCoin(user.getCoin() - cardPackage.getPrice());
 
         // Save user
-        userService.updateCoin(user);
+        userMemoryRepository.updateCoin(user);
 
 
-        for (Card card : cardService.getCardsForPackage(cardPackage)) {
-            cardService.addCardToUser(card, user);
+        for (Card card : cardMemoryRepository.getCardsForPackage(cardPackage)) {
+            cardMemoryRepository.addCardToUser(card, user);
         }
 
         this.deletePackage(cardPackage.getId());

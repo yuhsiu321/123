@@ -1,31 +1,19 @@
 package org.example.application.Gaming.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
-
-
-import lombok.Getter;
 
 import java.util.Objects;
 
 @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
 public class Card {
 
-
-
     private String Id;
-
     private String Name;
-
     private float Damage;
-
     private String elementType;
-
-
     private String cardType;
-
-
     private boolean isLocked;
+
     public Card(String Id, String Name, float Damage) {
         this.Id = Id;
         this.Name = Name;
@@ -118,13 +106,13 @@ public class Card {
             if((Objects.equals(this.getElementType(),"Water")&&Objects.equals(card.getElementType(),"Fire"))||
                     (Objects.equals(this.getElementType(),"Fire")&&Objects.equals(card.getElementType(),"Normal"))||
                     (Objects.equals(this.getElementType(),"Normal")&&Objects.equals(card.getElementType(),"Water"))){
-                return this.getDamage()*2;
+                return (this.getDamage()*2);
             }
             //not effective
             if((Objects.equals(this.getElementType(),"Fire")&&Objects.equals(card.getElementType(),"Water"))||
                     (Objects.equals(this.getElementType(),"Normal")&&Objects.equals(card.getElementType(),"Fire"))||
                     (Objects.equals(this.getElementType(),"Water")&&Objects.equals(card.getElementType(),"Normal"))){
-                return this.getDamage()/2;
+                return (this.getDamage()/2);
             }
         }
         //no effect

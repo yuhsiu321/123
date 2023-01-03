@@ -1,9 +1,6 @@
 package org.example;
 
 import org.example.application.Gaming.Game;
-import org.example.application.demo.DemoApp;
-import org.example.application.housing.HousingApp;
-import org.example.application.waiting.WaitingApp;
 import org.example.server.Server;
 
 import java.io.IOException;

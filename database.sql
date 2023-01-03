@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS packages CASCADE;
 CREATE TABLE packages
 (
     id    SERIAL PRIMARY KEY,
-    price DECIMAL(6, 2) NOT NULL DEFAULT 5,
+    price INT NOT NULL DEFAULT 5,
 );
 
 /* Cards */

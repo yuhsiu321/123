@@ -9,7 +9,7 @@ public class Package {
 
     private Integer price = 5;
 
-    transient List<Card> cards;
+    List<Card> cards;
 
     public Package(){}
 

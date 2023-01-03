@@ -35,8 +35,6 @@ public class PackageController {
 
     public Response handle(Request request) {
         if (request.getMethod().equals(Method.POST.method)) {
-            //User user = new User();
-            //user.setUsername(request.getToken());
             if (request.getToken() == null || !"admin".equalsIgnoreCase(request.getToken())) {
                 Response response = new Response();
                 response.setStatusCode(StatusCode.UNAUTHORIZED);
@@ -44,9 +42,8 @@ public class PackageController {
                 response.setContent(StatusCode.UNAUTHORIZED.message);
                 return response;
             }
-            return create1(request);
+            return create(request);
         }
-
 
         Response response = new Response();
         response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
@@ -56,52 +53,6 @@ public class PackageController {
     }
 
     private Response create(Request request) {
-        //Package cardPackage = (Package) packageRepository.addPackage(gson.fromJson(request.getContent(), Package.class));
-        Package cardPackage = packageRepository.addPackage();
-
-        if (cardPackage != null) {
-            //System.out.println("Content:"+request.getContent()+"\n");
-            JsonObject jsonObject = JsonParser.parseString(request.getContent()).getAsJsonObject();
-            System.out.println("jsonOb:+jsonObject+\n");
-            JsonArray jsonArray = jsonObject.getAsJsonArray();
-            //System.out.println(jsonArray);
-            List<Card> cards = new ArrayList<>();
-            //System.out.println("Card:"+cards);
-            for (JsonElement cardJsonElement : jsonArray) {
-                JsonObject cardJson = cardJsonElement.getAsJsonObject();
-
-                Card card = cardRepository.addCard(new Card (
-                        cardJson.get("Id").getAsString(),
-                        cardJson.get("Name").getAsString(),
-                        cardJson.get("Damage").getAsFloat()
-                ));
-
-                card = cardRepository.addCardToPackage(card, cardPackage.getId());
-
-                cards.add(card);
-            }
-
-            JsonObject returnJsonObject = (JsonObject) gson.toJsonTree(cardPackage);
-            returnJsonObject.add("cards", gson.toJsonTree(cards));
-
-            Response response = new Response();
-            response.setStatusCode(StatusCode.CREATED);
-            response.setContentType(ContentType.APPLICATION_JSON);
-            //response.setAuthorization("Basic "+username+"-mtcgToken");
-            response.setAuthorization("Basic admin-mtcgToken");
-            response.setContent(gson.toJson(returnJsonObject));
-            //response.setContent(StatusCode.CREATED.message);
-
-            return response;
-        }
-        Response response = new Response();
-        response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
-        response.setContentType(ContentType.TEXT_PLAIN);
-        response.setContent(StatusCode.METHODE_NOT_ALLOWED.message);
-        return response;
-    }
-
-    private Response create1(Request request) {
         Gson gson = new Gson();
         Package cardPackage = packageRepository.addPackage();
         Card[] cards = gson.fromJson(request.getContent(),Card[].class);
@@ -117,49 +68,4 @@ public class PackageController {
         return response;
     }
 
-    private Response create2(Request request){
-
-        //Package cardPackage = (Package) packageRepository.addPackage(gson.fromJson(request.getContent(), Package.class));
-        ObjectMapper objectMapper = new ObjectMapper();
-        Package cardPackage = packageRepository.addPackage();
-        System.out.println(cardPackage.getId());
-
-        String json = request.getContent();
-        System.out.println("Content:"+json+"\n");
-        Card card;
-        try {
-            //card = objectMapper.readValue(json, Card.class);
-            List<Card> cards = Arrays.asList(objectMapper.readValue(json, Card[].class));
-            System.out.println("Card: "+cards);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        //System.out.println(card);
-
-        //card = cardRepository.addCard(cards);
-        //System.out.println(card.getId());
-
-
-        /*for (int i=0;i<=5;i++) {
-            card = cardRepository.addCard(card);
-        }*/
-        //card = cardRepository.addCardToPackage(card,cardPackage.getId());
-
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        response.setAuthorization("Basic admin-mtcgToken");
-        //response.setAuthorization("Basic "+username+"-mtcgToken");
-        //response.setAuthorization("Basic admin-mtcgToken");
-        String content = "hi";
-        /*try {
-            content = objectMapper.writeValueAsString(card);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }*/
-        System.out.println(content);
-        response.setContent(content);
-
-        return response;
-    }
 }

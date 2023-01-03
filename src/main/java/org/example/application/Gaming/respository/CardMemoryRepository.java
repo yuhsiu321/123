@@ -36,10 +36,10 @@ public class CardMemoryRepository implements CardRepository{
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                Card card = new Card(
-                        rs.getString(1), // id
-                        rs.getString(2), // name
-                        rs.getFloat(3)); // damage
+                Card card = new Card();
+                card.setId(rs.getString("id"));
+                card.setName(rs.getString("name"));
+                card.setDamage(rs.getFloat("damage"));
                 rs.close();
                 ps.close();
                 conn.close();
@@ -184,13 +184,12 @@ public class CardMemoryRepository implements CardRepository{
         card.setElementType(card.getName());
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id,name, damage, element_type,card_type) VALUES(?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO cards(id, name, damage, element_type,card_type) VALUES(?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,card.getId());
             ps.setString(2, card.getName());
             ps.setFloat(3, card.getDamage());
             ps.setString(4,card.getElementType());
             ps.setString(5, card.getCardType());
-
 
             ps.execute();
             conn.close();
