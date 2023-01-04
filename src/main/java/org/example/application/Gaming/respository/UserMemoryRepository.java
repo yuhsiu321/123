@@ -105,11 +105,12 @@ public class UserMemoryRepository implements UserRepository {
     public User findStatbyUsername(String username){
         try{
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT username,elo From users WHERE username=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id,username,elo From users WHERE username=?;");
             ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
+                    user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setElo(rs.getInt("elo"));
                     rs.close();

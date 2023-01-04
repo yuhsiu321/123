@@ -11,7 +11,13 @@ import org.example.server.http.ContentType;
 import org.example.server.http.Method;
 import org.example.server.http.StatusCode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BattleController {
+
+    List<User> userList = new ArrayList<>();
+
     private final BattleRepository battleRepository;
     private final UserRepository userRepository;
     Gson gson;
@@ -45,20 +51,19 @@ public class BattleController {
         User user ;
         user = userRepository.findbyUsername(request.getToken());
 
-        Battle battle = (Battle) battleRepository.createOrAddUserToBattle(user);
-        Battle battleResult = (Battle) battleRepository.waitForBattleToFinish(battle);
+        userList.add(user);
 
-        if(battleResult!=null){
-            Response response = new Response();
-            response.setStatusCode(StatusCode.OK);
-            response.setContentType(ContentType.APPLICATION_JSON);
-            response.setContent(gson.toJson(battleResult));
-            return response;
+        if(userList.size()>=2){
+            User p1 = userList.get(0);
+            User p2 = userList.get(1);
+            battleRepository.createOrAddUserToBattle(p1);
+            Battle battle = battleRepository.createOrAddUserToBattle(p2);
+            battleRepository.waitForBattleToFinish(battle);
         }
         Response response = new Response();
-        response.setStatusCode(StatusCode.BAD_REQUEST);
-        response.setContentType(ContentType.TEXT_PLAIN);
-        response.setContent(StatusCode.BAD_REQUEST.message);
+        response.setStatusCode(StatusCode.OK);
+        response.setContentType(ContentType.APPLICATION_JSON);
+        response.setContent("battle finish");
         return response;
     }
 }

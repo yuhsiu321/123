@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS packages CASCADE;
 CREATE TABLE packages
 (
     id    SERIAL PRIMARY KEY,
-    price INT NOT NULL DEFAULT 5,
+    price INT NOT NULL DEFAULT 5
 );
 
 /* Cards */
@@ -56,9 +56,8 @@ CREATE TABLE battles
     p2 INT,
     winner   INT,
     finished BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_player_a FOREIGN KEY (player_a) REFERENCES users (id),
-    CONSTRAINT fk_player_b FOREIGN KEY (player_b) REFERENCES users (id),
-    CONSTRAINT winner FOREIGN KEY (winner) REFERENCES users (id)
+    CONSTRAINT fk_player_a FOREIGN KEY (p1) REFERENCES users (id),
+    CONSTRAINT fk_player_b FOREIGN KEY (p2) REFERENCES users (id),
 );
 
 DROP TABLE IF EXISTS battle_rounds CASCADE;
@@ -70,8 +69,8 @@ CREATE TABLE battle_rounds
     card_2      VARCHAR(255) NOT NULL,
     winner_card VARCHAR(255),
     CONSTRAINT fk_battle FOREIGN KEY (battle_id) REFERENCES battles (id),
-    CONSTRAINT fk_card_a FOREIGN KEY (card_a) REFERENCES cards (id),
-    CONSTRAINT fk_card_b FOREIGN KEY (card_b) REFERENCES cards (id),
+    CONSTRAINT fk_card_a FOREIGN KEY (card_1) REFERENCES cards (id),
+    CONSTRAINT fk_card_b FOREIGN KEY (card_2) REFERENCES cards (id),
     CONSTRAINT fk_winner_card FOREIGN KEY (winner_card) REFERENCES cards (id)
 );
 
