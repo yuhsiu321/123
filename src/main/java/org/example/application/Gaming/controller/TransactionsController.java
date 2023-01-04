@@ -44,7 +44,7 @@ public class TransactionsController {
 
         User user = new User();
         user.setUsername(request.getToken());
-        Package cardPackage = packageRepository.getRandomPackage();
+        Package cardPackage = packageRepository.getPackageforUser();
         if (cardPackage != null && packageRepository.addPackageToUser(cardPackage,user)){
             Response response = new Response();
             response.setStatusCode(StatusCode.CREATED);

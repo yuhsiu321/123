@@ -53,7 +53,7 @@ public class PackageMemoryRepository implements PackageRepository{
     }
 
     @Override
-    public Package getRandomPackage() {
+    public Package getPackageforUser() {
         try {
             Connection conn = Database.getInstance().getConnection();
             Statement sm = conn.createStatement();

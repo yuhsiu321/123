@@ -315,13 +315,13 @@ public class BattleMemoryRepository implements BattleRepository{
             if (cardA.winsAgainst(cardB) || cardA.calculateDamage(cardB) > cardB.calculateDamage(cardA)) {
                 // Player A wins this round, and gets cardB
                 winnerCard = cardA;
-                deckA.add(cardB);
                 deckB.remove(cardB);
+                deckA.add(cardB);
             } else if (cardB.getDamage() > cardA.getDamage()) {
                 // Player B wins this round, and gets cardA
                 winnerCard = cardB;
-                deckB.add(cardA);
                 deckA.remove(cardA);
+                deckB.add(cardA);
             }
 
             if (winnerCard != null) {
@@ -340,8 +340,8 @@ public class BattleMemoryRepository implements BattleRepository{
         }
 
         // Clear deck
-        deckMemoryRepository.clearDeck(p1);
-        deckMemoryRepository.clearDeck(p2);
+        //deckMemoryRepository.clearDeck(p1);
+        //deckMemoryRepository.clearDeck(p2);
 
         // Update stats, tie
         if (winner == null) {

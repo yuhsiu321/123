@@ -9,7 +9,7 @@ import java.util.List;
 public interface PackageRepository {
     Package getPackage(int id);
 
-    Package getRandomPackage();
+    Package getPackageforUser();
 
     List<Package> getPackages();
 
