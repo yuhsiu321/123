@@ -31,7 +31,7 @@ public class CardMemoryRepository implements CardRepository{
     public Card getCard(String id) {
         try {
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage FROM cards WHERE id=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT id, name, damage,card_type,user_id FROM cards WHERE id=?;");
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
 
@@ -40,6 +40,8 @@ public class CardMemoryRepository implements CardRepository{
                 card.setId(rs.getString("id"));
                 card.setName(rs.getString("name"));
                 card.setDamage(rs.getFloat("damage"));
+                card.setCardType(rs.getString("card_type"));
+                card.setUser_id(rs.getInt("user_id"));
                 rs.close();
                 ps.close();
                 conn.close();

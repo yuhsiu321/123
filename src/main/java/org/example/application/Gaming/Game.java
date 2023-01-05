@@ -19,6 +19,7 @@ public class Game implements Application {
     private StatController statController;
     private ScoreController scoreController;
     private BattleController battleController;
+    private TradeController tradeController;
 
 
     public Game() {
@@ -27,6 +28,7 @@ public class Game implements Application {
         CardRepository cardRepository = new CardMemoryRepository();
         DeckRepository deckRepository = new DeckMemoryRepository();
         BattleRepository battleRepository = new BattleMemoryRepository();
+        TradeRepository tradeRepository = new TradeMemoryRepository();
         this.packageController = new PackageController(packageRepository,cardRepository);
         this.cardController = new CardController(cardRepository,userRepository);
         this.userController = new UserController(userRepository);
@@ -36,6 +38,7 @@ public class Game implements Application {
         this.statController = new StatController(userRepository);
         this.scoreController = new ScoreController(userRepository);
         this.battleController = new BattleController(battleRepository,userRepository);
+        this.tradeController = new TradeController(cardRepository,tradeRepository,userRepository);
     }
 
     @Override
@@ -58,6 +61,10 @@ public class Game implements Application {
             return scoreController.handle(request);
         } else if (request.getPath().equals("/battles")) {
             return battleController.handle(request);
+        }   else if(request.getPath().equals("/tradings")){
+            return tradeController.handle(request);
+        }else if(request.getPath().startsWith("/tradings/")){
+            return tradeController.handle2(request);
         }
 
         Response response = new Response();

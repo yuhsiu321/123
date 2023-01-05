@@ -79,11 +79,11 @@ CREATE TABLE battle_rounds
 DROP TABLE IF EXISTS trades CASCADE;
 CREATE TABLE trades
 (
-    id       SERIAL PRIMARY KEY,
+    id       VARCHAR(255) PRIMARY KEY,
     card_a   VARCHAR(255) NOT NULL,
-    card_b   VARCHAR(255),
-    coins    INT     DEFAULT 0,
-    accepted BOOLEAN DEFAULT NULL,
+    type VARCHAR(255),
+    mindamage decimal(6,2),
+    tradeStarter    VARCHAR(255),
     CONSTRAINT fk_card_a FOREIGN KEY (card_a) REFERENCES cards (id),
     CONSTRAINT fk_card_b FOREIGN KEY (card_b) REFERENCES cards (id)
 );

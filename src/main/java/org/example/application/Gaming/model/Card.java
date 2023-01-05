@@ -13,6 +13,7 @@ public class Card {
     private String elementType;
     private String cardType;
     private boolean isLocked;
+    private int user_id;
 
     public Card(String Id, String Name, float Damage) {
         this.Id = Id;
@@ -117,5 +118,13 @@ public class Card {
         }
         //no effect
         return this.getDamage();
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }
