@@ -53,7 +53,7 @@ public class TransactionsController {
             return response;
         }
         Response response = new Response();
-        response.setStatusCode(StatusCode.METHODE_NOT_ALLOWED);
+        response.setStatusCode(StatusCode.BAD_REQUEST);
         response.setContentType(ContentType.APPLICATION_JSON);
         response.setContent("Acquirement fail");
         return response;

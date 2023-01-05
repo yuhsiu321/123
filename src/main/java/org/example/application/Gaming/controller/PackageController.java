@@ -56,16 +56,25 @@ public class PackageController {
         Gson gson = new Gson();
         Package cardPackage = packageRepository.addPackage();
         Card[] cards = gson.fromJson(request.getContent(),Card[].class);
-        for(Card card:cards){
-            card = cardRepository.addCard(card);
-            card = cardRepository.addCardToPackage(card,cardPackage.getId());
-            //System.out.println(card);
+        Card card1 = cardRepository.getCard(cards[0].getId());
+        if(card1 == null) {
+            for (Card card : cards) {
+                card = cardRepository.addCard(card);
+                card = cardRepository.addCardToPackage(card, cardPackage.getId());
+                //System.out.println(card);
+            }
+            Response response = new Response();
+            response.setStatusCode(StatusCode.CREATED);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            response.setContent("package create");
+            return response;
+        }else{
+            Response response = new Response();
+            response.setStatusCode(StatusCode.BAD_REQUEST);
+            response.setContentType(ContentType.APPLICATION_JSON);
+            response.setContent("cards already exit");
+            return response;
         }
-        Response response = new Response();
-        response.setStatusCode(StatusCode.CREATED);
-        response.setContentType(ContentType.APPLICATION_JSON);
-        response.setContent("package create");
-        return response;
     }
 
 }
