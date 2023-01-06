@@ -122,13 +122,7 @@ public class UserController {
             Response response = new Response();
             response.setStatusCode(StatusCode.CREATED);
             response.setContentType(ContentType.APPLICATION_JSON);
-            String content = null;
-            try {
-                content = objectMapper.writeValueAsString(user);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-            response.setContent(content);
+            response.setContent("create successfully!");
             return response;
         }else{
             Response response = new Response();

@@ -58,7 +58,7 @@ public class BattleController {
             User p2 = userList.get(1);
             battleRepository.createOrAddUserToBattle(p1);
             Battle battle = battleRepository.createOrAddUserToBattle(p2);
-            battleRepository.waitForBattleToFinish(battle);
+            //battleRepository.waitForBattleToFinish(battle);
         }
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);

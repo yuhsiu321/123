@@ -58,6 +58,7 @@ public class SessionController {
             content="false username or password";
             response.setContent(content);
         }else {
+            content = "login successfully";
             response.setContent(content);
         }
         return response;

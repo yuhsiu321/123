@@ -87,3 +87,4 @@ CREATE TABLE trades
     CONSTRAINT fk_card_a FOREIGN KEY (card_a) REFERENCES cards (id),
     CONSTRAINT fk_card_b FOREIGN KEY (card_b) REFERENCES cards (id)
 );
+

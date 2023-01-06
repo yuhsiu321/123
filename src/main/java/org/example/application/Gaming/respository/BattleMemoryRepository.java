@@ -1,5 +1,6 @@
 package org.example.application.Gaming.respository;
 
+import com.google.gson.Gson;
 import org.example.application.Gaming.Database.Database;
 import org.example.application.Gaming.model.Battle;
 import org.example.application.Gaming.model.BattleRound;
@@ -18,7 +19,9 @@ public class BattleMemoryRepository implements BattleRepository{
     private CardMemoryRepository cardMemoryRepository;
     private DeckMemoryRepository deckMemoryRepository;
 
+    Gson gson;
     public BattleMemoryRepository(){
+        gson=new Gson();
         userMemoryRepository = UserMemoryRepository.getInstance();
         cardMemoryRepository = CardMemoryRepository.getInstance();
         deckMemoryRepository = DeckMemoryRepository.getInstance();
@@ -229,7 +232,7 @@ public class BattleMemoryRepository implements BattleRepository{
                 ps.setInt(1, winner.getId());
             } else {
                 // It's a draw.
-                //ps.setNull(1, java.sql.Types.NULL);
+                // Winner = 0
                 ps.setInt(1,0);
             }
 
@@ -287,7 +290,7 @@ public class BattleMemoryRepository implements BattleRepository{
         for (int i = 0; i < 100; i++) {
             // Check for winners
             if (deckA.size() == 0) {
-                // Deck A is empty, therefore player B won.
+                // Deck A is empty, therefore p2 won.
                 winner = p2;
                 // Update stats
                 userMemoryRepository.addStatForUser(p2, 1);
@@ -297,7 +300,7 @@ public class BattleMemoryRepository implements BattleRepository{
                 System.out.println("Player B won.");
                 break;
             } else if (deckB.size() == 0) {
-                // Deck B is empty, therefore player A won.
+                // Deck B is empty, therefore p1 won.
                 winner = p1;
                 // Update stats
                 userMemoryRepository.addStatForUser(p1, 1);
@@ -325,7 +328,9 @@ public class BattleMemoryRepository implements BattleRepository{
             }
 
             if (winnerCard != null) {
-                System.out.println("Winner: " + winnerCard.getName() + "(" + winnerCard.getDamage() + ")");
+                System.out.println("[Round "+(i+1)+"]  Win Card: " + winnerCard.getName() + "(" + winnerCard.getDamage() + ")");
+                System.out.println("DeckA"+gson.toJson(deckA));
+                System.out.println("DeckB"+gson.toJson(deckB));
             }
 
             this.addBattleRound(battle, cardA, cardB, winnerCard);
@@ -345,9 +350,12 @@ public class BattleMemoryRepository implements BattleRepository{
 
         // Update stats, tie
         if (winner == null) {
+            //Update stats
             userMemoryRepository.addStatForUser(p1, 0);
             userMemoryRepository.addStatForUser(p2, 0);
-            userMemoryRepository.updateEloForPlayers(p1, p2, 3, 3);
+            //Update elo
+            userMemoryRepository.updateEloForPlayers(p1, p2, 0, 0);
+            System.out.println("Tied Game");
         }
 
         return this.setWinnerForBattle(winner, battle);
