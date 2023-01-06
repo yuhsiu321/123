@@ -47,6 +47,12 @@ public class ScoreController {
         stringBuilder
                 .append("( ELO : ")
                 .append(user.getElo())
+                .append(", Total Battles: ")
+                .append(user.getTotalBattle())
+                .append(", Win Battles: ")
+                .append(user.getWinBattlles())
+                .append(", Lost Battles: ")
+                .append(user.getLostBattles())
                 .append(", RANK : ")
                 .append(user.getRank())
                 .append(") ");

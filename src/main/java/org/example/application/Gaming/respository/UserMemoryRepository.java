@@ -105,7 +105,7 @@ public class UserMemoryRepository implements UserRepository {
     public User findStatbyUsername(String username){
         try{
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT id,username,elo From users WHERE username=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * From users WHERE username=?;");
             ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -113,6 +113,9 @@ public class UserMemoryRepository implements UserRepository {
                     user.setId(rs.getInt("id"));
                     user.setUsername(rs.getString("username"));
                     user.setElo(rs.getInt("elo"));
+                    user.setTotalBattle(rs.getInt("total_battles"));
+                    user.setWinBattlles(rs.getInt("won_battles"));
+                    user.setLostBattles(rs.getInt("lost_battles"));
                     rs.close();
                     ps.close();
                     conn.close();
@@ -128,12 +131,15 @@ public class UserMemoryRepository implements UserRepository {
     public User getRankbyUsername(String username){
         try{
             Connection conn = Database.getInstance().getConnection();
-            PreparedStatement ps = conn.prepareStatement("SELECT username, elo,RANK() OVER(ORDER BY elo) AS rank From users WHERE username=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT username,total_battles,won_battles,lost_battles, elo,RANK() OVER(ORDER BY elo) AS rank From users WHERE username=?;");
             ps.setString(1,username);
             try(ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     User user = new User();
                     user.setUsername(rs.getString("username"));
+                    user.setTotalBattle(rs.getInt("total_battles"));
+                    user.setWinBattlles(rs.getInt("won_battles"));
+                    user.setLostBattles(rs.getInt("lost_battles"));
                     user.setElo(rs.getInt("elo"));
                     user.setRank(rs.getInt("rank"));
                     rs.close();

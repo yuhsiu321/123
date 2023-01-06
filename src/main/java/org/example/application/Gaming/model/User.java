@@ -25,6 +25,9 @@ public class User {
     private String Image;
     private Integer elo = 100;
     private Integer rank;
+    private Integer totalBattle;
+    private Integer winBattlles;
+    private Integer lostBattles;
     public User() {
     }
 
@@ -118,5 +121,29 @@ public class User {
 
     public void setRank(Integer rank) {
         this.rank = rank;
+    }
+
+    public Integer getTotalBattle() {
+        return totalBattle;
+    }
+
+    public void setTotalBattle(Integer totalBattle) {
+        this.totalBattle = totalBattle;
+    }
+
+    public Integer getWinBattlles() {
+        return winBattlles;
+    }
+
+    public void setWinBattlles(Integer winBattlles) {
+        this.winBattlles = winBattlles;
+    }
+
+    public Integer getLostBattles() {
+        return lostBattles;
+    }
+
+    public void setLostBattles(Integer lostBattles) {
+        this.lostBattles = lostBattles;
     }
 }

@@ -47,7 +47,14 @@ public class StatController {
         stringBuilder
                 .append("( Elo : ")
                 .append(user.getElo())
-                .append("), ");
+                .append(", Total Battles: ")
+                .append(user.getTotalBattle())
+                .append(", Win Battles: ")
+                .append(user.getWinBattlles())
+                .append(", Lost Battles: ")
+                .append(user.getLostBattles())
+                .append(")");
+
         returnBody = stringBuilder.toString();
         Response response = new Response();
         response.setStatusCode(StatusCode.OK);
